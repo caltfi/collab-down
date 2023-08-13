@@ -9,7 +9,7 @@
     if(isset($_POST['mdContent'])){
         $mdText = $_POST['mdContent'];
 
-        if(is_readable($mdFile)){
+        if(is_readable($mdFile) && !empty($mdText)){
             ///Add input to file
             file_put_contents($mdFile, $mdText);
 
@@ -18,7 +18,7 @@
             $Parsedown -> setSafeMode(true);
             echo $Parsedown->text(file_get_contents($mdFile));
         }
-    }elseif($_SERVER['REQUEST_METHOD'] === 'GET'){
+    }else{
     ?>
     <form action="index.php" method="post">
         <div class="row">
