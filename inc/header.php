@@ -7,5 +7,4 @@
     <link rel="stylesheet" href="css/bootstrap-grid.min.css">
     <title>122111845 Calum Fenton Project</title>
 </head>
-<body>
-    <div class="container">
+<body>  

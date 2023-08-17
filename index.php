@@ -1,9 +1,10 @@
 <!-- Header + Libraries -->
 <?php include "inc/header.php"; ?>
+<?php include "inc/navigation.php"; ?>
 <?php include "inc/db.php"; ?>
 <?php require "libs/Parsedown.php"; ?>
 <!-- Main Content -->
-<div class="container">
+<main class="flex-grow-1 p-3">
     <?php
     ob_start();
     // $mdFile = "mdfiles/test.md";
@@ -22,6 +23,8 @@
     //     }else{
     //         include "inc/markdownform.php";
     //     }
+    // include "inc/login.php";
+    // include "inc/signup.php";
     
     $user_id = "101";
     $project_id = "1";
@@ -55,15 +58,7 @@
                 echo "Error: Application could not write to the file.";
             }
 
-            //Parse and display file
-            $Parsedown = new Parsedown();
-            $Parsedown -> setSafeMode(true);
-            echo $Parsedown->text(file_get_contents($mdFile));
-
-            //Button to go back to index
-            echo "<form action='index.php'><div class='row d-flex justify-content-center'>";
-            echo "<div class='col-4'><input class='btn btn-primary w-100' type='submit' value='Go Back'></div>";
-            echo "</div></form>";
+            include "inc/documentdisplay.php";
         }else{
             include "inc/markdownform.php";
         }
