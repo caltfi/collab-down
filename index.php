@@ -11,21 +11,8 @@
 <?php include "inc/navigation.php"; ?>
 <!-- Main Content -->
 <main class="flex-grow-1 p-3">
-    <?php
-    // if(isset($_POST['mdContent'])){
-    //     $mdText = $_POST['mdContent'];
-    //     if(is_readable($mdFile) && !empty($mdText)){
-    //         ///Add input to file
-    //         file_put_contents($mdFile, $mdText);
-    //         //Parse and display file
-    //         $Parsedown = new Parsedown();
-    //         $Parsedown -> setSafeMode(true);
-    //         echo $Parsedown->text(file_get_contents($mdFile));
-    //     }else{
-    //         include "inc/markdownform.php";
-    //     }
-    
-    //if isset GET 'src' make $source = GET 'src' then switch $source
+    <?php    
+    //URL parameter to determine which form to display for user login or sign up
     if(isset($_GET['src'])){
         $source = $_GET['src'];
         if($source == 'sign_up'){
@@ -41,6 +28,7 @@
     $section_number = "1";
     $date_created = date('d-m-y');
     $date_updated = date('d-m-y');
+    
     //Create file path
     $md_file = "mdfiles/101_1_1_1692375346.md";
     
@@ -50,22 +38,16 @@
 
         //Check if file exists and if input is not empty
         if(!empty($md_text)){
-
             //Add input to file
             file_put_contents($md_file, $md_text);
-
-            // if($md_create = fopen($md_file, 'w')){
-            //     fwrite($md_create, $md_text);
-            //     fclose($md_create);
-            // }else{
-            //     echo "Error: Application could not write to the file.";
-            // }
-
+            //Display file
             include "inc/documentdisplay.php";
         }else{
+            //Display form again if input is empty
             include "inc/markdownform.php";
         }
     }else{
+        //display form if no input
         include "inc/markdownform.php";
     }
     ?>
