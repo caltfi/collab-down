@@ -12,15 +12,11 @@
 <!-- Main Content -->
 <main class="flex-grow-1 p-3">
     <?php
-    // $mdFile = "mdfiles/test.md";
-    
     // if(isset($_POST['mdContent'])){
     //     $mdText = $_POST['mdContent'];
-
     //     if(is_readable($mdFile) && !empty($mdText)){
     //         ///Add input to file
     //         file_put_contents($mdFile, $mdText);
-
     //         //Parse and display file
     //         $Parsedown = new Parsedown();
     //         $Parsedown -> setSafeMode(true);
@@ -29,37 +25,41 @@
     //         include "inc/markdownform.php";
     //     }
     
+    //if isset GET 'src' make $source = GET 'src' then switch $source
+    if(isset($_GET['src'])){
+        $source = $_GET['src'];
+        if($source == 'sign_up'){
+            include "inc/signup.php";
+        }else if($source == 'login'){
+            include "inc/login.php";
+        }
+    }
+
+    //fake data for testing
     $user_id = "101";
     $project_id = "1";
     $section_number = "1";
     $date_created = date('d-m-y');
     $date_updated = date('d-m-y');
-
-    $file_id = "{$user_id}_{$project_id}_{$section_number}_" . time();
-
-    $mdFile = "mdfiles/{$file_id}.md";
+    //Create file path
+    $md_file = "mdfiles/101_1_1_1692375346.md";
     
     if(isset($_POST['mdContent'])){
-        $mdText = $_POST['mdContent'];
+        //Get markdown user input from form 
+        $md_text = $_POST['mdContent'];
 
-        $query  = "INSERT INTO md_files(file_id, user_id, date_created, date_updated, project_id, section_number)";
-        $query .= "VALUES('{$file_id}', '{$user_id}', now(), now(), '{$project_id}', '{$section_number}')";
-        
-        $create_file_query = mysqli_query($connection, $query);
-
-        if(!$create_file_query){
-            die("QUERY FAILED" . mysqli_error($connection));
-        }
-
-        if(!empty($mdText)){
+        //Check if file exists and if input is not empty
+        if(!empty($md_text)){
 
             //Add input to file
-            if($mdCreate = fopen($mdFile, 'w')){
-                fwrite($mdCreate, $mdText);
-                fclose($mdCreate);
-            }else{
-                echo "Error: Application could not write to the file.";
-            }
+            file_put_contents($md_file, $md_text);
+
+            // if($md_create = fopen($md_file, 'w')){
+            //     fwrite($md_create, $md_text);
+            //     fclose($md_create);
+            // }else{
+            //     echo "Error: Application could not write to the file.";
+            // }
 
             include "inc/documentdisplay.php";
         }else{

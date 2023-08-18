@@ -20,9 +20,7 @@
                 <p class="text-center">Or</p>
             </div>
             <div class="col-5">
-                <form action="#">
-                    <button class="btn btn-outline-secondary w-100" type="submit">Sign-Up</button>
-                </form>
+                <button class="btn btn-outline-secondary w-100"><a href="index.php?src=sign_up" class="text-body">Sign-Up</a></button>
             </div>
         </form>
     </div>

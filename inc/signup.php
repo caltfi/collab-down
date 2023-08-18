@@ -131,9 +131,7 @@
                 <p class="text-center">Or</p>
             </div>
             <div class="col-5">
-                <form action="#">
-                    <button class="btn btn-outline-secondary w-100" type="submit">Log-In</button>
-                </form>
+                <button class="btn btn-outline-secondary w-100"><a href="index.php?src=login"  class="text-body">Log-In</a></button>
             </div>
         </form>
     </div>
