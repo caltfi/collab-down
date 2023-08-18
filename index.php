@@ -1,12 +1,17 @@
-<!-- Header + Libraries -->
-<?php include "inc/header.php"; ?>
-<?php include "inc/navigation.php"; ?>
+<!-- DB Connection + Header + Libraries -->
+<?php ob_start(); ?>
 <?php include "inc/db.php"; ?>
+<?php include "inc/functions.php"; ?>
 <?php require "libs/Parsedown.php"; ?>
+<?php include "inc/header.php"; ?>
+
+<?php //include "inc/login.php"; ?>
+
+<!-- Navigation -->
+<?php include "inc/navigation.php"; ?>
 <!-- Main Content -->
 <main class="flex-grow-1 p-3">
     <?php
-    ob_start();
     // $mdFile = "mdfiles/test.md";
     
     // if(isset($_POST['mdContent'])){
@@ -23,8 +28,6 @@
     //     }else{
     //         include "inc/markdownform.php";
     //     }
-    // include "inc/login.php";
-    // include "inc/signup.php";
     
     $user_id = "101";
     $project_id = "1";
@@ -66,6 +69,6 @@
         include "inc/markdownform.php";
     }
     ?>
-</div>
+</main>
 <!-- Footer -->
 <?php include "inc/footer.php"; ?>
