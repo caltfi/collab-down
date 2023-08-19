@@ -12,13 +12,13 @@
 <!-- Main Content -->
 <main class="flex-grow-1 p-3">
     <?php    
-    //URL parameter to determine which form to display for user login or sign up
+    //URL parameter from navigation links to determine which form to display for user login or sign up
     if(isset($_GET['src'])){
         $source = $_GET['src'];
-        if($source == 'sign_up'){
-            include "inc/signup.php";
-        }else if($source == 'login'){
+        if($source == 'login'){
             include "inc/login.php";
+        }else if($source == 'sign_up'){
+            include "inc/signup.php";
         }
     }
 
