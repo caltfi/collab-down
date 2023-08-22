@@ -1,25 +1,5 @@
 <?php
-//Function to create new markdown file in mdfiles folder and add entry to database table with unique file id
-function create_md_file($connection, $user_id, $project_id, $section_number){
-    //Create unique file id
-    $file_id = "{$user_id}_{$project_id}_{$section_number}_" . time();
-    //Create entry for file in mdfiles database table
-    $query  = "INSERT INTO md_files(file_id, user_id, date_created, date_updated, project_id, section_number)";
-    $query .= "VALUES('{$file_id}', '{$user_id}', now(), now(), '{$project_id}', '{$section_number}')";
-    //Send query to database
-    $create_file_query = mysqli_query($connection, $query);
-    //Check if query was successful
-    if(!$create_file_query){
-        die("QUERY FAILED" . mysqli_error($connection));
-    }
-    //Create file
-    $md_file = "mdfiles/{$file_id}.md";
-    if($md_create = fopen($md_file, 'w')){
-        fclose($md_create);
-    }else{
-        echo "Error: Application could not create file.";
-    }
-}
+//Functions.php
 
 //Function to get content from markdown file section, parse it and echo it
 function display_md_file($md_file){
@@ -107,6 +87,45 @@ function create_user($connection, $name, $email, $user_name, $password, $profile
     exit();
 }
 
+//Function to create new file
+function create_file($filename) {
+    if ($md_create = fopen($filename, 'w')) {
+        fclose($md_create);
+        return true;
+    } else {
+        return false;
+    }
+}
+
+//Function to insert file data into database
+function insert_file_data($connection, $file_id, $assign_uid, $date, $document_id, $section_number) {
+    $query = "INSERT INTO files (files_id, files_assign_uid, files_date_created, files_date_updated, files_document_id, files_section_number) VALUES (?, ?, ?, ?, ?, ?);";
+    $prep_stat = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($prep_stat, $query)) {
+        header("Location: ../new_document.php?error=stmtfail");
+        exit();
+    }
+    mysqli_stmt_bind_param($prep_stat, "ssssii", $file_id, $assign_uid, $date, $date, $document_id, $section_number);
+    mysqli_stmt_execute($prep_stat);
+    mysqli_stmt_close($prep_stat);
+}
+
+//Function to create a new document
+function create_document($connection, $title, $sections, $date, $admin){
+    $query     = "INSERT INTO documents (documents_title, documents_date, documents_admin, documents_no_sections) VALUES (?, ?, ?, ?);";
+    $prep_stat = mysqli_stmt_init($connection);
+    if(!mysqli_stmt_prepare($prep_stat, $query)){
+        header("Location: ../new_document.php?error=stmtfail");
+        exit();
+    }
+    mysqli_stmt_bind_param($prep_stat, "ssss", $title, $date, $admin, $sections);
+    mysqli_stmt_execute($prep_stat);
+    mysqli_stmt_close($prep_stat);
+        
+    //header("Location: ../new_document.php?error=none");
+    //exit();
+}
+
 //Function to check if login form input is empty   
 function empty_login_input($user_name, $password){
     if(empty($user_name) || empty($password)){
@@ -140,3 +159,4 @@ function login_user($connection, $user_name, $password){
         exit();
     }
 }
+

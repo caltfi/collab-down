@@ -4,7 +4,7 @@
         <div class="col">
             <div class="form-group">
                 <h2 class="pb-2 border-bottom mb-3">Create a New Document</h2>
-                <form action="#" method="post">
+                <form action="inc/new_document.inc.php" method="post">
                     <label for="title" class="mb-3">Document Title</label>
                     <input type="text" name="title" id="title" class="form-control mb-3" >
                     <label for="sections" class="mb-3">Number of Sections</label>
@@ -13,6 +13,20 @@
                     <button type="submit" name="submit" class="btn btn-dark" >Create!</button>
                 </form>
             </div>
+            <br>
+            <?php
+                if(isset($_GET['error'])){
+                    if($_GET['error'] == "emptyinput"){
+                        echo "<p>Please give your document a title.</p>";
+                    }elseif($_GET['error'] == "stmtfailed"){
+                        echo "<p>Something went wrong, please try again.</p>";
+                    }elseif($_GET['error'] == "notloggedin"){
+                        echo "<p>You must be logged in to create a document.</p>";
+                    }elseif($_GET['error'] == "none"){
+                        echo "<p>You have created a new document!</p>";
+                    }
+                }
+            ?>
         </div>
     </div>
 </div>

@@ -1,5 +1,6 @@
 <?php ob_start() ?>
 <?php session_start() ?>
+<?php require_once "db.php" ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-grid.min.css">
+    <style>
+        .nav > li > .dropdown-menu > li > a:hover { background-color: #292b2c; }
+    </style>
     <title>Collabdown - 122111845 Calum Fenton Project</title>
 </head>
 <body>
@@ -29,15 +33,7 @@
                 Home
             </a>
         </li>
-        <li>
-            <a href="documents.php" class="nav-link text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-table me-2" viewBox="0 0 16 16">
-                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"/>
-                </svg>
-                Documents
-            </a>
-        </li>
-        <li>
+        <li class="nav-item">
             <a href="#" class="nav-link text-white" id="cheat_sheet_link">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid me-2" viewBox="0 0 16 16">
                     <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"/>
@@ -45,6 +41,51 @@
                 Cheat Sheet
             </a>
         </li>
+        <?php 
+        //Only show following Document dropdown if user is logged in
+        if(isset($_SESSION['username'])){
+        ?>
+        <li class="nav-item">
+            <a class="nav-link dropdown-toggle text-white" href="documents.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-table me-2" viewBox="0 0 16 16">
+                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"/>
+                </svg>
+                Documents
+            </a>
+            <ul class="dropdown-menu bg-dark mb-2" style="border: none;">
+                <?php
+                    //echo <li> elements for each document in database that user is either documents_admin from documents table or is a files_assign_uid from files table
+                    $username = $_SESSION['username'];
+                    $query = "SELECT * FROM documents WHERE documents_admin = '$username'";
+                    $prep_stat = mysqli_stmt_init($connection);
+                    if (!mysqli_stmt_prepare($prep_stat, $query)) {
+                        echo "Error: " . mysqli_error($connection);
+                    }
+                    mysqli_stmt_execute($prep_stat);
+                    $result = mysqli_stmt_get_result($prep_stat);
+                    while($row = mysqli_fetch_assoc($result)){
+                        $title  = $row['documents_title'];
+                        $doc_id = $row['documents_id'];
+                        echo "<li><a class='dropdown-item text-white mb-2' href='edit_document.php?doc_id={$doc_id}'><svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='currentColor' class='bi bi-file-earmark-fill me-3' viewBox='0 0 16 16'><path d='M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3z'/></svg>{$title}</a></li>";
+                    }
+                    mysqli_stmt_close($prep_stat);
+                    // for($i = 1; $i < 5; $i++){
+                    //     echo "<li><a class='dropdown-item text-white mb-2' href='#'><svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='currentColor' class='bi bi-file-earmark-fill me-3' viewBox='0 0 16 16'><path d='M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3z'/></svg>Document {$i}</a></li>";
+                    // } 
+                ?>
+                <li>
+                    <a class="dropdown-item text-white" href="new_document.php">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-plus-lg me-2" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                        </svg>
+                        New Document
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <?php
+        }
+        ?>
     </ul>
     <hr>
     <div class="dropdown">
