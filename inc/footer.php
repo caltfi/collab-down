@@ -7,5 +7,20 @@
     </div>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          const cheatSheetLink = document.getElementById("cheat_sheet_link");
+          const cheatSheet = document.getElementById("cheat_sheet");
+
+          cheatSheetLink.addEventListener("click", function(event) {
+              event.preventDefault();
+              if (cheatSheet.style.display === "block") {
+                  cheatSheet.style.display = "none";
+              } else {
+                  cheatSheet.style.display = "block";
+              }
+          });
+      });
+    </script>
 </body>
 </html>

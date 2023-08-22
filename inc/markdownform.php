@@ -9,7 +9,7 @@
             </div>
             <div class="row d-flex justify-content-center">
                 <div class="col-4">
-                    <input class="btn btn-primary w-100" type="submit" name="submit" value="Save">
+                    <input class="btn btn-dark w-100" type="submit" name="submit" value="Save">
                 </div>
             </div>
         </form>
