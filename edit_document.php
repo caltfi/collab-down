@@ -69,7 +69,7 @@
                             <textarea name="mdContent" class="form-control" id="mdContent" cols="30" rows="15" placeholder="Markdown Text Here"><?php echo $file_content ?></textarea>
                             </div>
                             <div class="col-3 m-2">
-                            <input class="btn btn-dark w-100" type="submit" name="submit" value="Save">
+                            <input class="btn btn-secondary w-100" type="submit" name="submit" value="Save">
                             </div>
                         </div>
                     </form>
