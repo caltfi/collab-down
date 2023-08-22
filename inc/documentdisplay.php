@@ -1,4 +1,6 @@
 <?php
+    require_once "functions.php";
+    require_once "../libs/Parsedown.php";
     //display_md_file function
     display_md_file($md_file);
 ?>

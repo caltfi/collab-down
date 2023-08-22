@@ -1,25 +1,11 @@
 <!-- DB Connection + Header + Libraries -->
-<?php ob_start(); ?>
 <?php include "inc/db.php"; ?>
-<?php include "inc/functions.php"; ?>
-<?php require "libs/Parsedown.php"; ?>
 <?php include "inc/header.php"; ?>
-
-<?php //include "inc/login.php"; ?>
-
-<!-- Navigation -->
-<?php include "inc/navigation.php"; ?>
 <!-- Main Content -->
 <main class="flex-grow-1 p-3">
     <?php    
-    //URL parameter from navigation links to determine which form to display for user login or sign up
-    if(isset($_GET['src'])){
-        $source = $_GET['src'];
-        if($source == 'login'){
-            include "inc/login.php";
-        }else if($source == 'sign_up'){
-            include "inc/signup.php";
-        }
+    if(isset($_SESSION['user_full_name'])){
+        echo "<h1 class='text-center'>Hello there, {$_SESSION['user_full_name']}!</h1>";
     }
 
     //fake data for testing
