@@ -1,5 +1,5 @@
 <?php include "inc/header.php" ?>
-<main class="flex-grow-1 p-3  overflow-y-scroll">
+<main class="flex-grow-1 p-3 overflow-y-scroll" style="min-height: 100vh">
     <?php
         //document id from url
         $doc_id         = $_GET['doc_id'];
