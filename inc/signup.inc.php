@@ -25,7 +25,7 @@ if(isset($_POST['submit'])){
         header("Location: ../signup.php?error=passwordnonmatch");
         exit();
     }
-    if(user_name_exists($connection, $user_name, $email) !== false){
+    if(user_name_exists($connection, $user_name, $email, "signup") !== false){
         header("Location: ../signup.php?error=usernametaken");
         exit();
     }

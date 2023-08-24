@@ -1,4 +1,4 @@
-        <footer class="d-flex justify-content-end align-items-center bg-light p-3" style="position: absolute; bottom: 0; right: 0; border-top: 2px solid #e9ecef;">
+        <footer class="d-flex justify-content-end align-items-center bg-light p-3" style="position: absolute; bottom: 0; right: 0; border-top: 2px solid #e9ecef; width:100vw; z-index:1;">
             <section class="align-content-center">
             <a href="#" class="text-body small me-2">About</a> 
             <a href="https://github.com/caltfi/collab-down" class="text-body small me-2">GitHub</a>

@@ -1,6 +1,6 @@
 <h1 class="text-center mt-2">Markdown Cheat Sheet</h1>
     <hr>
-    <p>This Markdown cheat-sheet gives a brief overview of all the wonderful parts of Markdown syntax. If you are having trouble, refer to the information below, however, if you are interested in learning some more advanced and complicated aspects to Markdown to improve your document (or just for fun!) then <a href="cheatsheet.php" class="text-body">follow this link</a> to find out more.</p>
+    <p>This Markdown cheat-sheet gives a brief overview of all the wonderful parts of Markdown syntax. If you are having trouble, refer to the information below, however, if you are interested in learning some more advanced and complicated aspects to Markdown to improve your document (or just for fun!) then <a href="https://github.github.com/gfm/" class="text-body">follow this link</a> to find out more.</p>
     
     <h2>Headers</h2>
     <p>Here are some examples of headers in Markdown:</p>

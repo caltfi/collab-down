@@ -52,11 +52,11 @@ function password_non_match($password, $confirm_pwd){
 }
 
 //Function to check if email or username already exists
-function user_name_exists($connection, $user_name, $email){
+function user_name_exists($connection, $user_name, $email, $page){
     $query     = "SELECT * FROM users WHERE users_uid = ? OR users_email = ?;";
     $prep_stat = mysqli_stmt_init($connection);
     if(!mysqli_stmt_prepare($prep_stat, $query)){
-        header("Location: ../signup.php?error=stmtfail");
+        header("Location: ../{$page}.php?error=stmtfail");
         exit();
     }
     mysqli_stmt_bind_param($prep_stat, "ss", $user_name, $email);
@@ -122,8 +122,8 @@ function create_document($connection, $title, $sections, $date, $admin){
     mysqli_stmt_execute($prep_stat);
     mysqli_stmt_close($prep_stat);
         
-    //header("Location: ../new_document.php?error=none");
-    //exit();
+    header("Location: ../new_document.php?error=none");
+    exit();
 }
 
 //Function to check if login form input is empty   
@@ -138,7 +138,7 @@ function empty_login_input($user_name, $password){
 //Function to verify login details and begin user session   
 function login_user($connection, $user_name, $password){
     // Check if username OR email matches existing user, returns -> row mysqli fetch assoc
-    $uid_exists = user_name_exists($connection, $user_name, $user_name);
+    $uid_exists = user_name_exists($connection, $user_name, $user_name, "login");
     if($uid_exists === false){
         header("Location: ../login.php?error=wronglogin");
         exit();
@@ -160,3 +160,42 @@ function login_user($connection, $user_name, $password){
     }
 }
 
+//Function for user to change password
+function forgot_password($connection, $email){
+    // Check if email matches existing user, returns -> row mysqli fetch assoc
+    $uid_exists = user_name_exists($connection, $email, $email, "forgot_password");
+    if($uid_exists === false){
+        header("Location: ../forgot_password.php?error=wronglogin");
+        exit();
+    }
+
+    $user_name = $uid_exists["users_uid"];
+    $user_email = $uid_exists["users_email"];
+    $user_full_name = $uid_exists["users_name"];
+    $user_pwd = $uid_exists["users_pwd"];
+
+    header("Location: ../forgot_password.php?error=none");
+    exit();
+}
+
+//Function to get total word count
+function get_total_word_count($result){
+    //initialise word count to 0
+    $total_word_count = 0;
+    //Go through each file and count words, if file doesn't exist for some reason just add 0 to total word count
+    while($row = mysqli_fetch_assoc($result)){
+        $file_id = $row['files_id'];
+        $file_path = "mdfiles/$file_id.md";
+
+        if(file_exists($file_path)){
+            $file       = fopen($file_path, "r");
+            $word_count = 0;
+            while(!feof($file)){
+                $word_count += str_word_count(fgets($file));
+            }
+            $total_word_count += $word_count;
+            fclose($file);
+        }else{$total_word_count += 0;}
+    }
+    return $total_word_count;
+}

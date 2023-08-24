@@ -3,12 +3,14 @@
     <div class="row g-4 py-5 row-cols-1 row-cols-lg-3 justify-content-center">
         <div class="col">
             <div class="form-group">
-                <h2 class="pb-2 border-bottom mb-3">Log-In</h2>
+                <h2 class="pb-2 border-bottom mb-3 text-center">Log-In</h2>
                 <form action="inc/login.inc.php" method="post">
                     <input type="text" name="user_name" id="" placeholder="Username or E-mail..." class="form-control mb-3" >
                     <input type="password" name="password" id="" placeholder="Password..." class="form-control mb-3" >
                     <button type="submit" name="submit" class="btn btn-dark" >Log In</button>
                 </form>
+                <hr>
+                <a href="forgot_password.php">Forgot your password?</a>
             </div>
             <br>
             <?php

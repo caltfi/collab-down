@@ -3,7 +3,7 @@
     <div class="row g-4 py-5 row-cols-1 row-cols-lg-3 justify-content-center">
         <div class="col">
             <div class="form-group">
-                <h2 class="pb-2 border-bottom mb-3">Sign-Up</h2>
+                <h2 class="pb-2 border-bottom mb-3 text-center">Sign-Up</h2>
                 <form action="inc/signup.inc.php" method="post">
                     <input type="text" name="name" id="" placeholder="Full name..." class="form-control mb-3" >
                     <input type="text" name="email" id="" placeholder="E-mail..." class="form-control mb-3" >
