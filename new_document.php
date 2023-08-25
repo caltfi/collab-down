@@ -7,9 +7,7 @@
                 <form action="inc/new_document.inc.php" method="post">
                     <label for="title" class="mb-3">Document Title</label>
                     <input type="text" name="title" id="title" class="form-control mb-3" >
-                    <label for="sections" class="mb-3">Number of Sections</label>
-                    <input type="range" name="sections" id="sections"  min="3" max="12" value="3" step="1" class="form-control form-range mb-3">
-                    <span><h3  id="sections_value">3</h3></span><hr>
+                    <hr>
                     <button type="submit" name="submit" class="btn btn-dark" >Create!</button>
                 </form>
             </div>

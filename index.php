@@ -2,7 +2,7 @@
 <?php include "inc/db.php"; ?>
 <?php include "inc/header.php"; ?>
 <!-- Main Content -->
-<main class="flex-grow-1 p-3">
+<main class="flex-grow-1 p-3 overflow-y-scroll" style="max-height: 100vh;">
 <?php    
     if(isset($_SESSION['user_full_name'])){
         ?>
@@ -52,8 +52,8 @@
 
             mysqli_stmt_close($prep_stat);
             ?>
-                <div class="col ms-2 me-1 mt-3">
-                    <div class="card border-top-0 border-dark-subtle shadow-lg mb-5" style="width:25rem; height:32rem;">
+                <div class="col ms-2 me-1 mt-3 mb-4">
+                    <div class="card border-top-0 border-dark-subtle shadow-lg mb-5" style="width:25rem; height:35rem;">
                         <img src="assets/spiral.jpg" class="card-img-top" alt="Document" style="border-bottom:medium dashed #8e8e8e;">
                         <div class="card-body mt-3">
                             <h4 class="card-title ms-3" style=" font-family:'Courier New',Courier,monospace; font-weight:bold;"><strong><?php echo $title ?></strong></h4>
@@ -65,6 +65,11 @@
                                 <li class="list-group-item">Last Updated: 3 days ago</li>
                                 <li class="list-group-item"><a href="edit_document.php?doc_id=<?php echo $doc_id ?>" class="link-dark link-opacity-25-hover">Edit Document</a><br></li>
                                 <li class="list-group-item"><a href="view_document.php?doc_id=<?php echo $doc_id ?>" class="link-dark link-opacity-25-hover">View Document</a></li>
+                                <?php
+                                    if($admin == $username){
+                                        echo "<li class='list-group-item'><a href='delete_document.php?doc_id={$doc_id}' class='link-dark link-opacity-25-hover'>Delete Document</a></li>";
+                                    }
+                                ?>
                             </ul>
                         </div>
                     </div>
@@ -73,13 +78,14 @@
         }
     }else{
         ?>
+        <div class="row">
         <div class="col">
             <h1 class='text-center mt-5 mb-5'>Welcome to #Collabdown!</h1>
             <h2 class='text-center mb-5'><strong>Log-In</strong> to get started.</h2>
             <div class="text-center" style="margin-top: 35px; margin-right: 580px;">
                 <img src='assets/arrow.jpg' height="200" style="transform: rotate(-45deg); opacity: 0.6;" alt='Arrow'>
             </div>
-            </div>
+        </div>
         <?php
     }
 ?>

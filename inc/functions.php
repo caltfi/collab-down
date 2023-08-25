@@ -121,9 +121,6 @@ function create_document($connection, $title, $sections, $date, $admin){
     mysqli_stmt_bind_param($prep_stat, "ssss", $title, $date, $admin, $sections);
     mysqli_stmt_execute($prep_stat);
     mysqli_stmt_close($prep_stat);
-        
-    header("Location: ../new_document.php?error=none");
-    exit();
 }
 
 //Function to check if login form input is empty   

@@ -10,7 +10,7 @@
                     <button type="submit" name="submit" class="btn btn-dark" >Log In</button>
                 </form>
                 <hr>
-                <a href="forgot_password.php">Forgot your password?</a>
+                <a href="forgot_password.php" class="text-body">Forgot your password?</a>
             </div>
             <br>
             <?php
