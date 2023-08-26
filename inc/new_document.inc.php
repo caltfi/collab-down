@@ -21,7 +21,7 @@ if(isset($_POST['title'])){
 
     create_document($connection, $title, $sections, $date, $admin);
 
-    header("Location: ../index.php");
+    header("Location: ../index.php?error=none");
     exit();
 
     //get document id

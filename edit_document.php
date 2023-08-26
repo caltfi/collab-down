@@ -18,6 +18,10 @@
     $row = mysqli_fetch_assoc($result);
     $title = $row['documents_title'];
     $sections = $row['documents_no_sections'];
+
+    if($sections == 0){
+        include "inc/assign_sections.inc.php";
+    }else{
 ?>
 <!-- Title -->
 <div class="row d-flex align-items-center">
@@ -125,6 +129,7 @@
     echo "<p class='fw-light text-center mb-5'>Word count: {$document_word_count} words</p><br>";
     echo "<button href='view_document.php?doc_id={$doc_id}' class='btn btn-outline-secondary w-100' style='font-family:\"Courier New\",Courier,monospace;'>View</button>";
     mysqli_stmt_close($prep_stat);
+}
 ?>
 </main>
 <?php
