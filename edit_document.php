@@ -1,8 +1,20 @@
 <?php include "inc/header.php" ?>
 <main class="flex-grow-1 p-3 overflow-y-scroll" style="max-height:100vh;">
 <?php
+    if(isset($_GET['error'])){
+        if($_GET['error'] == "none"){
+            echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+                    <strong>Success!</strong> You have added sections to your document.
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                </div>";
+        }elseif($_GET['error'] == "stmtfail"){
+            echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                    <strong>Something went wrong!</strong> Please try again.
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
+        }
+    }
     //document id from url
-    $doc_id         = $_GET['doc_id'];
+    $doc_id = $_GET['doc_id'];
 
     //using the doc_id get the document title and no of sections
     $query = "SELECT documents_title, documents_no_sections FROM documents WHERE documents_id = ?;";
@@ -56,11 +68,12 @@
 
     //Below is everything relating to each section
     while($row = mysqli_fetch_assoc($result)){
-        $section_number = $row['files_section_number'];
+        $file_id        = $row['files_id'];
+        $title          = $row['files_title'];
+        $username       = $row['files_assign_uid'];
         $date_created   = $row['files_date_created'];
         $date_updated   = $row['files_date_updated'];
-        $file_id        = $row['files_id'];
-        $username       = $row['files_assign_uid'];
+        $section_number = $row['files_section_number'];
 
         //query to get user profile pic and full name from users table where users_uid = $username
         $query = "SELECT users_profile_pic, users_name FROM users WHERE users_uid = ?;";
@@ -96,7 +109,7 @@
                     <strong><?php echo $user_full_name ?></strong>
                     <p class="fs-6">@<?php echo $username ?></p>
                     <hr>
-                    <p><h4>Title</h4> Section <?php echo $section_number ?></p>
+                    <p><h4><?php echo $title ?></h4> Section <?php echo $section_number ?></p>
                     <p><h4><?php echo date("d/m/Y", strtotime($date_updated)) ?></h4> Last Updated</p>
                     <p><h4><?php echo $word_count ?> words</h4> Word Count</p>
                 </div>

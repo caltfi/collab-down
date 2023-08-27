@@ -77,7 +77,7 @@
                     mysqli_stmt_close($prep_stat); 
                 ?>
                 <li>
-                    <a class="dropdown-item text-white" href="#" id="new_doc_button">
+                    <a class="dropdown-item text-white" href="" id="new_doc_button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg me-2" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
                         </svg>
@@ -94,7 +94,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark-fill me-2" viewBox="0 0 16 16">
                     <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3z"/>
                 </svg>
-                <input type="text" name="title" id="title_text_input" placeholder="Name..." style="width: 150px;">
+                <input type="text" name="title" id="title_text_input" placeholder="Title..." style="width: 150px;">
             </form>
         </li>
     </ul>

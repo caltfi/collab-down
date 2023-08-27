@@ -75,7 +75,7 @@
                                 <li class="list-group-item"><a href="view_document.php?doc_id=<?php echo $doc_id ?>" class="link-dark link-opacity-25-hover">View Document</a></li>
                                 <?php
                                     if($admin == $username){
-                                        echo "<li class='list-group-item'><a href='delete_document.php?doc_id={$doc_id}' class='link-dark link-opacity-25-hover'>Delete Document</a></li>";
+                                        echo "<li class='list-group-item'><a href='delete_document.inc.php?doc_id={$doc_id}' class='link-dark link-opacity-25-hover'>Delete Document</a></li>";
                                     }
                                 ?>
                             </ul>
@@ -88,7 +88,7 @@
             <div class="col ms-2 me-1 mt-3 mb-4">
                 <div class="card border-top-0 border-dark-subtle shadow-lg mb-5" style="width:25rem; height:35rem;">
                     <img src="assets/spiral.jpg" class="card-img-top" alt="Document" style="border-bottom:medium dashed #8e8e8e;">
-                    <a href="#" class="text-body link-underline link-underline-opacity-0"><div class="card-body mt-3">
+                    <a href="" class="text-body link-underline link-underline-opacity-0" id="new_doc_main_button"><div class="card-body mt-3">
                         <p class="card-text text-center mt-5">
                             <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-plus-lg mt-5" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
@@ -96,6 +96,10 @@
                             <h3 class="text-center" style="font-family:'Courier New',Courier,monospace;">Create New Document</h3>
                         </p>
                     </div></a>
+
+                    <form action="inc/new_document.inc.php" id="new_doc_form_2" method="post" class="text-white mb-2 text-center" style="display: none;">
+                        <input type="text" name="title" id="title_text_input_2" placeholder="Title..." style="width: 300px;">
+                    </form>
                 </div>
             </div>
         <?php
