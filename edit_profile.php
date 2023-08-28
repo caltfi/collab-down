@@ -22,7 +22,7 @@
             <p><h3>Change your details:</h3></p>
             <h4><input type="text" name="full_name" id="full_name" value="<?php echo $user_full_name ?>" class="w-100"></h4>
             <hr>
-            <p><a href="reset_password.php" class="text-body">Reset your password</a></p>
+            <p><a href="./inc/logout.inc.php?source=reset_password" class="text-body">Reset your password</a></p>
             <p><a href="delete_account.php" class="text-body">Delete your account</a></p>
         </div>
         <div class="col-2 p-3">
