@@ -10,7 +10,7 @@
                     <button type="submit" name="submit" class="btn btn-dark" >Log In</button>
                 </form>
                 <hr>
-                <a href="forgot_password.php" class="text-body">Forgot your password?</a>
+                <a href="reset_password.php" class="text-body">Forgot your password?</a>
             </div>
             <br>
             <?php
@@ -19,6 +19,13 @@
                         echo "<p>Please fill in all fields.</p>";
                     }elseif($_GET['error'] == "wronglogin"){
                         echo "<p>Incorrect login information</p>";
+                    }
+                }
+                if(isset($_GET['result'])){
+                    if($_GET['result'] == "signup_success"){
+                        echo "<p>You have successfully created an account!</p>";
+                    }if($_GET['result'] == "pwd_reset_success"){
+                        echo "<p>Your password reset was successful!</p>";
                     }
                 }
             ?>

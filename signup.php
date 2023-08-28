@@ -28,8 +28,6 @@
                         echo "<p>This username /email is already taken.</p>";
                     }elseif($_GET['error'] == "stmtfail"){
                         echo "<p>Something went wrong. Please try again.</p>";
-                    }elseif($_GET['error'] == "none"){
-                        echo "<p>You have created an account!</p>";
                     }
                 }
             ?>

@@ -83,7 +83,7 @@ function create_user($connection, $name, $email, $user_name, $password, $profile
     mysqli_stmt_bind_param($prep_stat, "sssss", $name, $email, $user_name, $hash_pwd, $profile_pic);
     mysqli_stmt_execute($prep_stat);
     mysqli_stmt_close($prep_stat);
-    header("Location: ../signup.php?error=none");
+    header("Location: ../login.php?result=signup_success");
     exit();
 }
 
@@ -155,24 +155,6 @@ function login_user($connection, $user_name, $password){
         header("Location: ../index.php");
         exit();
     }
-}
-
-//Function for user to change password
-function forgot_password($connection, $email){
-    // Check if email matches existing user, returns -> row mysqli fetch assoc
-    $uid_exists = user_name_exists($connection, $email, $email, "forgot_password");
-    if($uid_exists === false){
-        header("Location: ../forgot_password.php?error=wronglogin");
-        exit();
-    }
-
-    $user_name = $uid_exists["users_uid"];
-    $user_email = $uid_exists["users_email"];
-    $user_full_name = $uid_exists["users_name"];
-    $user_pwd = $uid_exists["users_pwd"];
-
-    header("Location: ../forgot_password.php?error=none");
-    exit();
 }
 
 //Function to get total word count
