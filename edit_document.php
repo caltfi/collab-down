@@ -116,40 +116,85 @@
             </div>
             <div class="col-6">
                 <form action="inc/edit_document.inc.php" method="post">
-                    <div class="row">
-                        <div class="col-12">
-                            <label for="mdContent" aria-label="Markdown Text Goes Here"></label>
-                            <textarea name="mdContent" class="form-control border-2 rounded-2" id="mdContent" cols="30" rows="25" placeholder="Markdown Text Here" style="font-family:'Courier New',Courier,monospace;"><?php echo $file_content ?></textarea>
-                        </div>
-                        <div class="col-3 m-2">
-                            <input class="btn btn-outline-secondary w-100" style="font-family:'Courier New',Courier,monospace;" type="submit" name="submit" value="Save">
-                        </div>
-                        <div class="col-3 m-2">
-                            <a href='view_document.php?doc_id=<?php echo $doc_id ?>' class='btn btn-outline-secondary w-100' style='font-family:"Courier New",Courier,monospace;'>View</a>
-                        </div>
-                    </div>
+                <label for="mdContent" aria-label="Markdown Text Goes Here"></label>
+                <textarea name="mdContent" class="form-control border-2 rounded-2" id="mdContent" cols="30" rows="25" placeholder="Markdown Text Here" style="font-family:'Courier New',Courier,monospace;"><?php echo $file_content ?></textarea>
+            </div>
+            <div class="col-2">
+                <div class="card p-4 mt-4">
+                <input type="submit" name="save-submit" class="btn btn-outline-secondary mb-3" value="Save">
+                <input type="submit" name="edit-submit" class="btn btn-outline-secondary" value="Edit"><hr>
+                <input type="submit" name="delete-submit" class="btn btn-outline-danger" value="Delete">
                 </form>
+                </div>
             </div>
         </div>
         <?php
         $document_word_count += $word_count;
     }
-    //count no of usernames in users array
-    $no_of_users = count($users);
-    echo"<hr>";
-    echo "<p class='fw-light text-center'>No. of sections: {$sections} sections</p>";
-    echo "<p class='fw-light text-center'>No. of contributors: {$no_of_users} users</p>";
-    echo "<p class='fw-light text-center mb-5'>Word count: {$document_word_count} words</p><br>";
-    echo "<button href='view_document.php?doc_id={$doc_id}' class='btn btn-outline-secondary w-100' style='font-family:\"Courier New\",Courier,monospace;'>View</button>";
-    mysqli_stmt_close($prep_stat);
-}
-?>
-</main>
+        //count no of usernames in users array
+        $no_of_users = count($users);
+    ?>    
+    <!-- Section creation form -->
+    <form action="create_files.inc.php" method="post">
+    <div class="sectionContainer">
+        <div class="row d-flex justify-content-center mb-3 align-items-start">
+            <div class="col-2">
+                <div class="card p-4 mt-4">
+                    <h3 class="text-center">Section <?php echo $section_number + 1 ?></h3>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card p-4 mt-4">
+                <label for="title1" class="mb-3" aria-label="Title"></label>
+                <input type="text" name="title1" id="title1" class="form-control mb-3" placeholder="Title...">
+                <label for="user1" class="mb-3" aria-label="User"></label>
+                <input type="text" name="user1" id="user1" class="form-control mb-3" placeholder="User...">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="card p-4 mt-4">
+                <input type="submit" name="delete-submit" class="btn btn-outline-danger" value="Delete">
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center mb-3 align-items-start">
+        <div class="col-10">
+            <div class="card p-4 mt-4">
+            <a href="" class="text-body link-underline link-underline-opacity-0"><p class="card-text text-center" id="create_section_button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                </svg>
+                <h3 class="text-center">Create New Section</h3>
+            </p></a>
+            </div>
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center mb-3 align-items-start">
+        <div class="col-10">
+            <div class="card p-4 mt-4">
+            <input type="submit" name="submit" class="btn btn-lg btn-outline-secondary" value="Add Sections to Document">
+            </div>
+        </div>
+    </div>
+    </form>
+<hr>
+<p class="fw-light text-center">No. of sections: <?php echo $sections ?></p>
+<p class="fw-light text-center">No. of contributors: <?php echo $no_of_users ?></p>
+<p class="fw-light text-center mb-5">Word count: <?php echo $document_word_count ?></p><br>
+<button href="view_document.php?doc_id=<?php echo $doc_id ?>" class="btn btn-outline-secondary w-100" style="font-family:'Courier New',Courier,monospace;">View</button>
 <?php
+    }
+    mysqli_stmt_close($prep_stat);
+
     if(isset($_GET['error'])){
         if($_GET['error'] == "stmtfail"){
             echo "<p class='text-center'>Something went wrong, please try again!</p>";
+        }elseif($_GET['error'] == "none"){
+            echo "<p class='text-center'>Your changes have been saved!</p>";
         }
     }
 ?>
+</main>
 <?php include "inc/footer.php" ?>

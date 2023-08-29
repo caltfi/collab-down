@@ -10,8 +10,9 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script>
-        //displays cheat sheet on click of link on navbar
         document.addEventListener("DOMContentLoaded", function() {
+
+            //displays cheat sheet on click of link on navbar
             const cheatSheetLink = document.getElementById("cheat_sheet_link");
             const cheatSheet = document.getElementById("cheat_sheet");
 
@@ -70,34 +71,57 @@
                 });
             }
 
-            //to create a new section on click of newsection link
-            const create_section_button = document.getElementById('create_section_button');
-            const sectionContainer      = document.querySelector('.sectionContainer');
-            let sectionCount            = 1;
+            //For creating new sections in edit_document.php
+            const sectionContainer = document.querySelector('.sectionContainer');
+            let sectionCount       = 1;
+            //create section functionality
+            document.getElementById('create_section_button').addEventListener('click', function(e) {
+                e.preventDefault();
+                const originalSection = sectionContainer.querySelector('.section');
+                const newSection = originalSection.cloneNode(true);
 
-            if(create_section_button && sectionContainer){
-                create_section_button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const originalSection = document.querySelector('.section');
-                    const newSection      = originalSection.cloneNode(true);
-                    
-                    //update IDs and names of inputs and h3 in new section
-                    newSection.querySelectorAll('input').forEach(function(input) {
-                        const originalId   = input.getAttribute('id');
-                        const originalName = input.getAttribute('name');
-                        input.setAttribute('id', `${originalId.slice(0, -1)}${sectionCount + 1}`);
-                        input.setAttribute('name', `${originalName.slice(0, -1)}${sectionCount + 1}`);
-                        input.value = '';
-                    });
-                    newSection.querySelector('h3').textContent = `Section ${sectionCount + 1}`;
-
-                    //append child section
-                    sectionContainer.appendChild(newSection);
-
-                    sectionCount++;
+                //update IDs and names of inputs and h3 in each new section
+                newSection.querySelectorAll('input').forEach(function(input) {
+                    const originalId   = input.getAttribute('id');
+                    const originalName = input.getAttribute('name');
+                    input.setAttribute('id', `${originalId.slice(0, -1)}${sectionCount + 1}`);
+                    input.setAttribute('name', `${originalName.slice(0, -1)}${sectionCount + 1}`);
+                    input.value = '';
                 });
+                newSection.querySelector('h3').textContent = `Section ${sectionCount + 1}`;
+
+
+                sectionContainer.appendChild(newSection);
+                sectionCount++;
+                updateDeleteButtonVisibility();
+            });
+
+            //delete section functionality
+            sectionContainer.addEventListener('click', function(e) {
+                if (e.target && e.target.classList.contains('delete-section-button')) {
+                    const sections = sectionContainer.querySelectorAll('.section');
+                    if (sections.length > 1) {
+                        sectionContainer.removeChild(sections[sections.length - 1]);
+                        sectionCount--;
+                        updateDeleteButtonVisibility();
+                    }
+                }
+            });
+
+            //delete section button visibility
+            function updateDeleteButtonVisibility() {
+                const deleteButtons = sectionContainer.querySelectorAll('.delete-section-button');
+                deleteButtons.forEach(function(deleteButton) {
+                    deleteButton.style.display = 'none';
+                });
+                const lastDeleteButton = sectionContainer.lastElementChild.querySelector('.delete-section-button');
+                const sections = sectionContainer.querySelectorAll('.section');
+                if(lastDeleteButton && sections.length !== 1){
+                    lastDeleteButton.style.display = 'block';
+                }
             }
+
+            updateDeleteButtonVisibility();
         });
     </script>
 </body>
