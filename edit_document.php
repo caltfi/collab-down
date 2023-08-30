@@ -31,6 +31,20 @@
     $title = $row['documents_title'];
     $sections = $row['documents_no_sections'];
 
+    // Get the files based on the document id
+    $query = "SELECT * FROM files WHERE files_document_id = ?;";
+    $prep_stat = mysqli_stmt_init($connection);
+    if (!mysqli_stmt_prepare($prep_stat, $query)) {
+        header("Location: index.php");
+        exit();
+    }
+    mysqli_stmt_bind_param($prep_stat, "i", $doc_id);
+    mysqli_stmt_execute($prep_stat);
+    $result = mysqli_stmt_get_result($prep_stat);
+
+    $document_word_count = 0;
+    $users               = array();
+
     if($sections == 0){
         include "inc/assign_sections.inc.php";
     }else{
@@ -52,20 +66,6 @@
     <hr>
 </div>
 <?php
-    // Get the file id
-    $query = "SELECT * FROM files WHERE files_document_id = ?;";
-    $prep_stat = mysqli_stmt_init($connection);
-    if (!mysqli_stmt_prepare($prep_stat, $query)) {
-        header("Location: index.php");
-        exit();
-    }
-    mysqli_stmt_bind_param($prep_stat, "i", $doc_id);
-    mysqli_stmt_execute($prep_stat);
-    $result = mysqli_stmt_get_result($prep_stat);
-
-    $document_word_count = 0;
-    $users               = array();
-
     //Below is everything relating to each section
     while($row = mysqli_fetch_assoc($result)){
         $file_id        = $row['files_id'];
@@ -117,7 +117,20 @@
             <div class="col-6">
                 <form action="inc/edit_document.inc.php" method="post">
                 <label for="mdContent" aria-label="Markdown Text Goes Here"></label>
-                <textarea name="mdContent" class="form-control border-2 rounded-2" id="mdContent" cols="30" rows="25" placeholder="Markdown Text Here" style="font-family:'Courier New',Courier,monospace;"><?php echo $file_content ?></textarea>
+                <textarea 
+                    name="mdContent" 
+                    class="form-control border-2 rounded-2" 
+                    id="mdContent" 
+                    cols="30" rows="25" 
+                    placeholder="Markdown Text Here" 
+                    <?php
+                        if(isset($_SESSION['username'])){
+                            if($_SESSION['username'] != $username){
+                                echo "value='Disabled readonly input' disabled readonly";
+                            }
+                        }
+                    ?>
+                    ><?php echo $file_content ?></textarea>
             </div>
             <div class="col-2">
                 <div class="card p-4 mt-4">

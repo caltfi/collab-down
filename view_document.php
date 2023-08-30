@@ -111,27 +111,7 @@
             echo "<p class='text-center'>Error, File is not readable!</p>";
         }
     }
-
-    //display parsed markdown document
-    // $md_file = "mdfiles/homer1_14_1_64e550287ddbc.md";
-    // if(is_readable($md_file)){
-    //     //Parse and display file
-    //     $Parsedown = new Parsedown();
-    //     $Parsedown -> setSafeMode(true);
-    //     echo $Parsedown->text(file_get_contents($md_file));
-    // }else{
-    //     echo "<p class='text-center'>Error, File is not readable!</p>";
-    // }
 ?>
-<!-- button to go back to edit_document.php -->
-<form action='index.php'>
-    <div class='row d-flex justify-content-center'>
-        <div class='col-4'>
-            <input class='btn btn-primary w-100' type='submit' value='Go Back'>
-        </div>
-    </div>
-</form>
-
 </div>
 </div>
 </main>
