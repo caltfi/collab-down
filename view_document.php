@@ -26,20 +26,20 @@
 <!-- Card with Title, information, print, go back to edit and email buttons -->
 <div class="row d-flex justify-content-center mb-3 align-items-start">
     <div class="col-2 p-4">
-        <a href="edit_document.php?doc_id=<?php echo $doc_id ?>"  class="text-body link-underline link-underline-opacity-0"  style='font-family:"Courier New",Courier,monospace;'>
-            <h1>  
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+        <a href="edit_document.php?doc_id=<?php echo $doc_id ?>"  class="text-body link-underline link-underline-opacity-0">
+            <h3>  
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
                 <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
             </svg>
             Edit
-            </h1>  
+            </h3>  
         </a>
     </div>
     <div class="col-8 border p-5 shadow-sm mb-3 mt-3">
         <div class="row">
 
             <div class="col-10">
-                <h1 style="font-family:'Courier New',Courier,monospace;" class="border-bottom pb-2 ms-2"><?php echo $title; ?></h1>
+                <h1 class="border-bottom pb-2 ms-2"><?php echo $title; ?></h1>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item text-muted">Created <?php echo date("d/m/Y", strtotime($date_created)) ?></li>
                     <li class="list-group-item text-muted">Current version <?php echo date("d/m/Y", time()) ?></li>
@@ -82,7 +82,6 @@
     </div>
 </div>
 
-<!-- <h1 class="text-center" style="font-family:'Courier New',Courier,monospace;"><?php echo $title; ?></h1> -->
 <!-- Parsed Document -->
 <div class="row d-flex justify-content-center mb-3 align-items-start">
 <div class="col-8 border p-5 shadow">

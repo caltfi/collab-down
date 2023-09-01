@@ -15,7 +15,7 @@
     if(isset($_SESSION['user_full_name'])){
         ?>
         <div class="row">
-            <h2 class="text-center mt-3 mb-3" style='font-family:"Courier New",Courier,monospace; font-weight:bold;'>Your Documents</h2>
+            <h2 class="text-center mt-3 mb-3">Your Documents</h2>
             <hr>
         <?php
         $username = $_SESSION['username'];
@@ -31,6 +31,7 @@
             $doc_id       = $row['documents_id'];
             $admin        = $row['documents_admin'];
             $date_created = $row['documents_date'];
+            $sections     = $row['documents_no_sections'];
 
             //query to get * from file where files_document_id = $doc_id
             $query     = "SELECT * FROM files WHERE files_document_id = ?;";
@@ -61,10 +62,10 @@
             mysqli_stmt_close($prep_stat);
             ?>
                 <div class="col ms-2 me-1 mt-3 mb-4">
-                    <div class="card border-top-0 border-dark-subtle shadow-lg mb-5" style="width:25rem; height:35rem;">
+                    <div class="card border-top-0 border-dark-subtle shadow-lg mb-5 ms-5" style="width:25rem; height:35rem;">
                         <img src="assets/spiral.jpg" class="card-img-top" alt="Document" style="border-bottom:medium dashed #8e8e8e;">
                         <div class="card-body mt-3">
-                            <h4 class="card-title ms-3" style=" font-family:'Courier New',Courier,monospace; font-weight:bold;"><strong><?php echo $title ?></strong></h4>
+                            <h4 class="card-title ms-3"><strong><?php echo $title ?></strong></h4>
                             <h6 class="card-subtitle ms-3">Created by <span class="fst-italic">@<?php echo $admin ?></span> on <span class="fst-italic"><?php echo date('d/m/Y', strtotime($date_created)) ?></span></h6>
                             <ul class="list-group list-group-flush mt-3">
                                 <li class="list-group-item">This is a short document synopsis, maybe an abstract. TBD.</li>
@@ -72,10 +73,14 @@
                                 <li class="list-group-item">No. of Users: <?php echo $user_count ?></li>
                                 <li class="list-group-item">Last Updated: 3 days ago</li>
                                 <li class="list-group-item"><a href="edit_document.php?doc_id=<?php echo $doc_id ?>" class="link-dark link-opacity-25-hover">Edit Document</a><br></li>
-                                <li class="list-group-item"><a href="view_document.php?doc_id=<?php echo $doc_id ?>" class="link-dark link-opacity-25-hover">View Document</a></li>
                                 <?php
+                                    if($sections > 0){ 
+                                        ?>
+                                        <li class="list-group-item"><a href="view_document.php?doc_id=<?php echo $doc_id ?>" class="link-dark link-opacity-25-hover">View Document</a></li>
+                                        <?php
+                                    }
                                     if($admin == $username){
-                                        echo "<li class='list-group-item'><a href='delete_document.inc.php?doc_id={$doc_id}' class='link-dark link-opacity-25-hover'>Delete Document</a></li>";
+                                        echo "<li class='list-group-item'><a href='delete.php?doc_id={$doc_id}' class='link-dark link-opacity-25-hover'>Delete Document</a></li>";
                                     }
                                 ?>
                             </ul>
@@ -86,14 +91,14 @@
         }
         ?>
             <div class="col ms-2 me-1 mt-3 mb-4">
-                <div class="card border-top-0 border-dark-subtle shadow-lg mb-5" style="width:25rem; height:35rem;">
+                <div class="card border-top-0 border-dark-subtle shadow-lg mb-5 ms-5" style="width:25rem; height:35rem;">
                     <img src="assets/spiral.jpg" class="card-img-top" alt="Document" style="border-bottom:medium dashed #8e8e8e;">
                     <a href="" class="text-body link-underline link-underline-opacity-0" id="new_doc_main_button"><div class="card-body mt-3">
                         <p class="card-text text-center mt-5">
                             <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-plus-lg mt-5" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
                             </svg>
-                            <h3 class="text-center" style="font-family:'Courier New',Courier,monospace;">Create New Document</h3>
+                            <h3 class="text-center">Create New Document</h3>
                         </p>
                     </div></a>
 
