@@ -1,10 +1,9 @@
 <div class="row d-flex align-items-center">
-    <div class="col d-flex justify-content-center">
-        <h1 style="font-family:'Courier New',Courier,monospace;"><?php echo $title; ?></h1>
+    <div class="col-10 d-flex justify-content-center">
+        <h1><?php echo $title; ?></h1>
     </div>
     <hr>
 </div>
-
 <!-- Section creation form -->
 <form action="inc/create_files.inc.php" method="post">
                 <!-- SECTION CONTAINER-->

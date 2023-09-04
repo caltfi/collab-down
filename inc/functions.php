@@ -111,7 +111,7 @@ function insert_file_data($connection, $file_id, $assign_uid, $date, $document_i
 }
 
 //Function to create a new document
-function create_document($connection, $title, $sections, $date, $admin){
+function create_document($connection, $title, $date, $admin, $sections){
     $query     = "INSERT INTO documents (documents_title, documents_date, documents_admin, documents_no_sections) VALUES (?, ?, ?, ?);";
     $prep_stat = mysqli_stmt_init($connection);
     if(!mysqli_stmt_prepare($prep_stat, $query)){
@@ -177,4 +177,30 @@ function get_total_word_count($result){
         }else{$total_word_count += 0;}
     }
     return $total_word_count;
+}
+
+//function to get total word count for a document
+function get_total_word_count_doc($doc_id, $connection){
+    $query = "SELECT * FROM files WHERE files_document_id = ?;";
+    $prep_stat = mysqli_stmt_init($connection);
+    if(!mysqli_stmt_prepare($prep_stat, $query)){
+        return 0;
+    }
+    mysqli_stmt_bind_param($prep_stat, "i", $doc_id);
+    mysqli_stmt_execute($prep_stat);
+    $result = mysqli_stmt_get_result($prep_stat);
+    return get_total_word_count($result);
+}
+
+//function to get user count for a document
+function get_user_count_for_document($doc_id, $connection){
+    $query = "SELECT DISTINCT files_assign_uid FROM files WHERE files_document_id = ?;";
+    $prep_stat = mysqli_stmt_init($connection);
+    if(!mysqli_stmt_prepare($prep_stat, $query)){
+        return 0;
+    }
+    mysqli_stmt_bind_param($prep_stat, "i", $doc_id);
+    mysqli_stmt_execute($prep_stat);
+    $result = mysqli_stmt_get_result($prep_stat);
+    return mysqli_num_rows($result);
 }

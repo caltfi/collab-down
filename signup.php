@@ -10,6 +10,12 @@
                     <input type="text" name="user_name" id="" placeholder="Username..." class="form-control mb-3" >
                     <input type="password" name="password" id="" placeholder="Password..." class="form-control mb-3" >
                     <input type="password" name="confirm_password" id="" placeholder="Confirm password..." class="form-control mb-3" >
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Agree to <a href="terms.php" class="link-dark link-opacity-25-hover">Terms and Conditions</a>
+                        </label>
+                    </div>
                     <button type="submit" name="submit" class="btn btn-dark" >Sign-Up</button>
                 </form>
             </div>

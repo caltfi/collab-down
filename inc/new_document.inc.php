@@ -5,7 +5,7 @@ require_once "functions.php";
 
 if(isset($_POST['title'])){
     $title    = $_POST['title'];
-    $date     = date('d-m-y');
+    $date     = date("Y-m-d");
     $sections = 0;
 
     if(empty($_POST['title'])){
@@ -19,7 +19,7 @@ if(isset($_POST['title'])){
         $admin = $_SESSION['username'];
     }
 
-    create_document($connection, $title, $sections, $date, $admin);
+    create_document($connection, $title, $date, $admin, $sections);
 
     header("Location: ../index.php?error=none");
     exit();

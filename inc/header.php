@@ -56,25 +56,76 @@
             <ul class="dropdown-menu bg-dark mb-2" style="border: none;">
                 <?php
                     $username = $_SESSION['username'];
-                    $query = "SELECT * FROM documents WHERE documents_admin = '$username'";
+                    
+                    $documents = array();
+
+                    //select docs where user is admin
+                    $query = "SELECT * FROM documents WHERE documents_admin = ?;";
                     $prep_stat = mysqli_stmt_init($connection);
-                    if (!mysqli_stmt_prepare($prep_stat, $query)) {
+                    if(!mysqli_stmt_prepare($prep_stat, $query)) {
                         echo "Error: " . mysqli_error($connection);
                     }
+                    mysqli_stmt_bind_param($prep_stat, "s", $username);
                     mysqli_stmt_execute($prep_stat);
                     $result = mysqli_stmt_get_result($prep_stat);
-                    while($row = mysqli_fetch_assoc($result)){
-                        $title    = $row['documents_title'];
-                        $doc_id   = $row['documents_id'];
-                        $sections = $row['documents_no_sections'];
-                        if($sections == 0){
-                            echo "<li><a class='dropdown-item text-white mb-3' href='edit_document.php?doc_id={$doc_id}'><svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='currentColor' class='bi bi-file-earmark-fill me-3' viewBox='0 0 16 16'><path d='M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3z'/></svg>{$title}</a></li>";
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $doc_id = $row['documents_id'];
 
-                        }else{
-                            echo "<li><a class='dropdown-item text-white mb-3' href='edit_document.php?doc_id={$doc_id}'><svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='currentColor' class='bi bi-file-earmark-text-fill me-3' viewBox='0 0 16 16'><path d='M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1h-7zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1h-4z'/></svg>{$title}</a></li>";
+                        //check if the document with the same ID already exists
+                        $exist_doc = array_filter($documents, function($doc)use($doc_id){
+                            return $doc['documents_id'] == $doc_id;
+                        });
+
+                        if (empty($exist_doc)){
+                            //add total word count and user count for the document
+                            $wordCount = get_total_word_count_doc($doc_id, $connection);
+                            $userCount = get_user_count_for_document($doc_id, $connection);
+                            $row['total_word_count'] = $wordCount;
+                            $row['user_count'] = $userCount;
+
+                            //add the document to the array
+                            $documents[] = $row;
                         }
                     }
-                    mysqli_stmt_close($prep_stat); 
+                    mysqli_stmt_close($prep_stat);
+
+                    //select docs where user is assigned
+                    $query = "SELECT documents.* FROM files INNER JOIN documents ON files.files_document_id = documents.documents_id WHERE files_assign_uid = ?;";
+                    $prep_stat = mysqli_stmt_init($connection);
+                    if(!mysqli_stmt_prepare($prep_stat, $query)){
+                        echo "Error: " . mysqli_error($connection);
+                    }
+                    mysqli_stmt_bind_param($prep_stat, "s", $username);
+                    mysqli_stmt_execute($prep_stat);
+                    $result = mysqli_stmt_get_result($prep_stat);
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $doc_id = $row['documents_id'];
+
+                        //check if the document with the same ID already exists
+                        $exist_doc = array_filter($documents, function($doc)use($doc_id){
+                            return $doc['documents_id'] == $doc_id;
+                        });
+
+                        if (empty($exist_doc)) {
+                            //add total word count and user count for the document
+                            $wordCount = get_total_word_count_doc($doc_id, $connection);
+                            $userCount = get_user_count_for_document($doc_id, $connection);
+                            $row['total_word_count'] = $wordCount;
+                            $row['user_count'] = $userCount;
+
+                            //add document to the array
+                            $documents[] = $row;
+                        }
+                    }
+                    mysqli_stmt_close($prep_stat);
+
+                    foreach($documents as $document){
+                        if($document['documents_no_sections'] == 0){
+                            echo "<li><a class='dropdown-item text-white mb-3' href='edit_document.php?doc_id={$document['documents_id']}'><svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='currentColor' class='bi bi-file-earmark-fill me-3' viewBox='0 0 16 16'><path d='M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3z'/></svg>{$document['documents_title']}</a></li>";
+                        }else{
+                            echo "<li><a class='dropdown-item text-white mb-3' href='edit_document.php?doc_id={$document['documents_id']}'><svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='currentColor' class='bi bi-file-earmark-text-fill me-3' viewBox='0 0 16 16'><path d='M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1h-7zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1h-4z'/></svg>{$document['documents_title']}</a></li>";
+                        }
+                    }
                 ?>
                 <li>
                     <a class="dropdown-item text-white" href="" id="new_doc_button">
