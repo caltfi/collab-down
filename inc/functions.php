@@ -204,3 +204,51 @@ function get_user_count_for_document($doc_id, $connection){
     $result = mysqli_stmt_get_result($prep_stat);
     return mysqli_num_rows($result);
 }
+
+//function to get user information for a document
+function get_all_user_info_document($doc_id, $connection){
+    $query = "SELECT DISTINCT files_assign_uid FROM files WHERE files_document_id = ?;";
+    $prep_stat = mysqli_stmt_init($connection);
+    if(!mysqli_stmt_prepare($prep_stat, $query)){
+        return 0;
+    }
+    mysqli_stmt_bind_param($prep_stat, "i", $doc_id);
+    mysqli_stmt_execute($prep_stat);
+    $result = mysqli_stmt_get_result($prep_stat);
+    
+    $user_info = array();
+    while($row = mysqli_fetch_assoc($result)){
+
+        $query = "SELECT * FROM users WHERE users_uid = ?;";
+        $prep_stat = mysqli_stmt_init($connection);
+        if(!mysqli_stmt_prepare($prep_stat, $query)){
+            return 0;
+        }
+        mysqli_stmt_bind_param($prep_stat, "s", $row['files_assign_uid']);
+        mysqli_stmt_execute($prep_stat);
+        $result2 = mysqli_stmt_get_result($prep_stat);
+        $row2 = mysqli_fetch_assoc($result2);
+        array_push($user_info, $row2);
+    }
+    return $user_info;
+}
+
+//function to get admin information
+function get_admin_info($admin, $connection){
+    //array to store admin info
+    $admin_info = array();
+    //query to get user profile pic and full name from users table where users_uid = $admin
+    $query = "SELECT users_profile_pic, users_name FROM users WHERE users_uid = ?;";
+    $prep_stat = mysqli_stmt_init($connection);
+    if(!mysqli_stmt_prepare($prep_stat, $query)){
+        die("Error:" . mysqli_error($connection));
+    }
+    mysqli_stmt_bind_param($prep_stat, "s", $admin);
+    mysqli_stmt_execute($prep_stat);
+    $result = mysqli_stmt_get_result($prep_stat);
+    $row = mysqli_fetch_assoc($result);
+    array_push($admin_info, $row['users_name']);
+    array_push($admin_info, $row['users_profile_pic']);
+
+    return $admin_info;
+}

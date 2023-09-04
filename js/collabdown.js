@@ -78,7 +78,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         newSection.querySelector('h3').textContent = `Section ${sectionCount + 1}`;
 
-
         sectionContainer.appendChild(newSection);
         sectionCount++;
         updateDeleteButtonVisibility();

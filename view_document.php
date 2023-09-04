@@ -12,6 +12,11 @@ foreach($documents as $document){
         $total_word_count = $document['total_word_count'];
         $total_user_count = $document['user_count'];
         $sections = $document['documents_no_sections'];
+        $admin = $document['documents_admin'];
+
+        $admin_info = get_admin_info($admin, $connection);
+
+        $users_info = get_all_user_info_document($doc_id, $connection);
         ?>
         <!-- Card with Title, information, print, go back to edit and email buttons -->
         <div class="row d-flex justify-content-center mb-3 align-items-start">
@@ -28,35 +33,40 @@ foreach($documents as $document){
             <div class="col-8 border p-5 shadow-sm mb-3 mt-3">
                 <div class="row">
                     <div class="col-10">
-                        <h1 class="border-bottom pb-2 ms-2"><?php echo $title; ?></h1>
+                        <h1 class="pb-2 ms-2"><?php echo $title; ?> - <?php echo date("d/m/Y", time()) ?></h1>
+                        <h5 class="border-bottom pb-2 ms-2 text-muted">Created by <?php echo $admin_info[0] ?> <em>@<?php echo $admin ?></em> on <?php echo date("d/m/Y", strtotime($date_created)) ?></h5>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item text-muted">Created On: <?php echo date("d/m/Y", strtotime($date_created)) ?></li>
-                            <li class="list-group-item text-muted">Current Version: <?php echo date("d/m/Y", time()) ?></li>
-                            <li class="list-group-item text-muted">Word Count: <?php echo $total_word_count ?> words</li>
-                            <li class="list-group-item text-muted">No. of Users: <?php echo $total_user_count ?></li>
-                            <li class="list-group-item text-muted">No. of Sections: <?php echo $sections ?></li>
+                            <li class="list-group-item text-muted d-flex align-items-center">
+                                <img src="assets/<?php echo $admin_info[1] ?>" alt="Profile Picture for <?php echo $admin_info[0] ?>" class="rounded-circle me-2 border border-2" width="40" height="40">
+                                <span><h5>Document Admin:<br><strong><?php echo $admin_info[0] ?></strong></h5></span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <span class="badge text-bg-light p-2 me-4"><h5><strong><?php echo $sections ?></strong> sections</h5></span>
+                                <span class="badge text-bg-light p-2 me-4"><h5><strong><?php echo $total_word_count ?></strong> words</h5></span>
+                                <span class="badge text-bg-light p-2"><h5><strong><?php echo $total_user_count ?></strong> users</h5></span>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-2">
                         <div class="d-grid gap-2 mx-auto">
-                            <h6 class="text-center text-muted pb-2 border-bottom">Actions</h6>
+                            <h6 class="text-center pb-2 border-bottom">Actions</h6>
                         <form action="email_document.php">
                             <input type="hidden" name="doc_id" value="<?php echo $doc_id ?>">
-                            <button class="btn btn-outline-secondary w-100 m-2" type="submit">
+                            <button class="btn btn-outline-dark w-100 m-2" type="submit">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill me-2" viewBox="0 0 16 16">
                                     <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
                                 </svg>
                                 Email
                             </button>
                         </form>
-                        <button class="btn btn-outline-secondary w-100 m-2" onclick="window.print()">
+                        <button class="btn btn-outline-dark w-100 m-2" onclick="window.print()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill me-2" viewBox="0 0 16 16">
                                 <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
                                 <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
                             </svg>
                             Print
                         </button>
-                        <button class="btn btn-outline-secondary w-100 m-2" onclick="window.save()">
+                        <button class="btn btn-outline-dark w-100 m-2" onclick="window.save()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download me-2" viewBox="0 0 16 16">
                                 <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
                                 <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
