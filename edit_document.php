@@ -231,7 +231,7 @@ if(isset($_SESSION['username'])){
                     <div class="row d-flex justify-content-center mb-5 align-items-start">
                         <div class="col-10">
                             <div class="card p-4 mt-4 mb-5">
-                            <input type="submit" name="submit" class="btn btn-lg btn-outline-secondary" value="Add Sections to Document">
+                                <input type="submit" name="submit" class="btn btn-lg btn-outline-secondary" value="Add Sections to Document">
                             </div>
                         </div>
                     </div>
@@ -259,6 +259,7 @@ if(isset($_SESSION['username'])){
                                     </div>
                                     <div class="col-6">
                                         <div class="card p-4 mt-4">
+                                            <input type="hidden" name="doc_id" value="<?php echo $doc_id ?>">
                                             <label for="title1" class="mb-3" aria-label="Title"></label>
                                             <input type="text" name="title1" id="title1" class="form-control mb-3" placeholder="Title...">
                                             <label for="user1" class="mb-3" aria-label="User"></label>
@@ -295,7 +296,7 @@ if(isset($_SESSION['username'])){
                         <div class="col-6">
                             <div class="card p-4 mt-4">
                                 <p class="card-text text-center">
-                                <input type="submit" name="submit" class="btn btn-lg btn-outline-secondary w-50" value="Add Sections to Document">
+                                <input type="submit" name="submit-files" class="btn btn-lg btn-outline-secondary w-50" value="Add Sections to Document">
                                 </p>
                             </div>
                         </div>
