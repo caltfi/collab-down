@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    //For creating new sections in edit_document.php
+    //For creating new sections
     const sectionContainer = document.querySelector('.sectionContainer');
     let sectionCount       = 1;
     //create section functionality
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const originalId   = input.getAttribute('id');
             const originalName = input.getAttribute('name');
             input.setAttribute('id', `${originalId.slice(0, -1)}${sectionCount + 1}`);
-            input.setAttribute('name', `${originalName.slice(0, -1)}${sectionCount + 1}`);
+            input.setAttribute('name', `${originalName.slice(0, -2)}${sectionCount}]`);
             input.value = '';
         });
         newSection.querySelector('h3').textContent = `Section ${sectionCount + 1}`;

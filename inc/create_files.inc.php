@@ -2,25 +2,33 @@
 session_start();
 require_once "db.php";
 require_once "functions.php";
+$doc_id = $_GET['doc_id'];
 
 if(isset($_POST['submit-files'])){
-    $doc_id = $_POST['doc_id'];
+    $titles = $_POST['title'];
+    $users  = $_POST['user'];
+    $no_sections = count($titles);
+    $date = date('d-m-y', time());
 
-    $section_number = $_POST['section_number'];
-    $section_title  = $_POST['title1'];
-    $sections       = $_POST['no_of_sections'];
-    $assign_uid     = $_POST['user1'];
-    $date           = date('d-m-y', time());
+    echo "<h1>Document ID: {$doc_id}</h1>";
+    echo "<h1>Number of Sections: {$no_sections}</h1>";
+    echo "<hr>";
 
-    //file creation and insertion into database
-    for($section_number = 1; $section_number <= $sections; $section_number++){
+    for($i = 0; $i < $no_sections; $i++){
+        $section_number = $i + 1;
+        $section_title = $titles[$i];
+        $assigned_user = $users[$i];
+
         $file_id = "{$doc_id}_{$section_number}_" . uniqid();
         $md_file = "../mdfiles/{$file_id}.md";
-
+        
+        //file creation and insertion into database
         if(create_file($md_file)){
-            insert_file_data($connection, $file_id, $assign_uid, $date, $document_id, $section_number);
+            //create_file($md_file);
+            insert_file_data($connection, $file_id, $section_title, $assigned_user, $date, $doc_id, $section_number);
+            add_section_to_doc($connection, $doc_id);
         }else{
-            header("Location: ../edit_document.php?error=stmtfail");
+            header("Location: ../edit_document.php?doc_id={$doc_id}&error=stmtfail");
             exit();
         }
     }
