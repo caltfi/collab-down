@@ -128,7 +128,7 @@ if(isset($_SESSION['username'])){
                                 <p class="fs-6">@<?php echo $username ?></p>
                                 <hr>
                                 <p><h4><?php echo $title ?></h4> Section <?php echo $section_number ?></p>
-                                <p><h4><?php echo date("d/m/Y", strtotime($date_updated)) ?></h4> Last Updated</p>
+                                <p><h4><?php echo date("D j M, Y", strtotime($date_updated)) ?></h4> Last Updated</p>
                                 <p><h4><?php echo $word_count ?> words</h4> Word Count</p>
                             </div>
                         </div>
@@ -227,23 +227,52 @@ if(isset($_SESSION['username'])){
 
                 //Section creation form at end if admin
                 if($session_username == $admin){
-                    $section_count = $sections + 1;
+                    $section_count_plusone = $sections + 1;
                     ?> 
                     <!-- Section creation form -->
-                    <form action="create_files.inc.php" method="post">
+                    <form action="inc/create_files.inc.php?doc_id=<?php echo $doc_id ?>" method="post">
                     <div class="sectionContainer">
                         <div class="row d-flex justify-content-center mb-3 align-items-start section">
                             <div class="col-2">
                                 <div class="card p-4 mt-4">
-                                    <h3 class="text-center">Section <?php echo $section_count ?></h3>
+                                    <h3 class="text-center">Section <?php echo $section_count_plusone ?></h3>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="card p-4 mt-4">
-                                <label for="title<?php echo $section_count ?>" class="mb-3" aria-label="Title"></label>
-                                <input type="text" name="title<?php echo $section_count ?>" id="title<?php echo $section_count ?>" class="form-control mb-3" placeholder="Title...">
-                                <label for="user<?php echo $section_count ?>" class="mb-3" aria-label="User"></label>
-                                <input type="text" name="user<?php echo $section_count ?>" id="user<?php echo $section_count ?>" class="form-control mb-3" placeholder="User...">
+                                <label for="title<?php echo $section_count_plusone ?>" class="mb-3" aria-label="Title"></label>
+                                <input type="text" name="title[<?php echo $section_count_plusone ?>]" id="title<?php echo $section_count_plusone ?>" class="form-control mb-3" placeholder="Title...">
+
+                                <label for="user<?php echo $section_count_plusone ?>" class="mb-3" aria-label="User"></label>
+                                <div class="input-group mb-3">
+                                    <input type="text" name="user[<?php echo $section_count_plusone ?>]" id="user<?php echo $section_count_plusone ?>" class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Search for Users...">
+                                    <span class="input-group-text">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <datalist id="datalistOptions">
+                                    <?php 
+                                    //query to return all users from users table
+                                    $query = "SELECT * FROM users";
+                                    $result = mysqli_query($connection, $query);
+                                    if(!$result){
+                                        header("Location: ../index.php?error=stmtfail");
+                                    }
+                                    $count = mysqli_num_rows($result);
+                
+                                    if($count == 0){
+                                        echo "<li><h1>No Results</h1></li>";
+                                    }else{
+                                        while($row = mysqli_fetch_assoc($result)){
+                                            $username = $row['users_uid'];
+
+                                            echo "<option value='{$username}'>";
+                                        } 
+                                    }  
+                                    ?>
+                                </datalist>
                                 </div>
                             </div>
                             <div class="col-2">
@@ -274,7 +303,7 @@ if(isset($_SESSION['username'])){
                         <div class="col-10">
                             <div class="card p-4 mt-4 mb-5">
                                 <p class="card-text text-center w-40">
-                                <input type="submit" name="submit" class="btn btn-lg btn-secondary" value="Add Sections to Document">
+                                <input type="submit" name="submit-files" class="btn btn-lg btn-secondary" value="Add Sections to Document">
                                 </p>
                             </div>
                         </div>

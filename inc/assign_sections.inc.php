@@ -18,8 +18,38 @@
                 <div class="card p-4 mt-4">
                     <label for="title" class="mb-3" aria-label="Title"></label>
                     <input type="text" name="title[0]" id="title1" class="form-control mb-3" placeholder="Title...">
+                    
                     <label for="user" class="mb-3" aria-label="User"></label>
-                    <input type="text" name="user[0]" id="user1" class="form-control mb-3" placeholder="User...">
+                    <div class="input-group mb-3">
+                        <input type="text" name="user[0]" id="user1" class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Search for Users...">
+                        <span class="input-group-text">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <datalist id="datalistOptions">
+                        <?php 
+                        //query to return all users from users table
+                        $query = "SELECT * FROM users";
+                        $result = mysqli_query($connection, $query);
+                        if(!$result){
+                            header("Location: ../index.php?error=stmtfail");
+                        }
+                        $count = mysqli_num_rows($result);
+    
+                        if($count == 0){
+                            echo "<li><h1>No Results</h1></li>";
+                        }else{
+                            while($row = mysqli_fetch_assoc($result)){
+                                $username = $row['users_uid'];
+
+                                echo "<option value='{$username}'>";
+                            } 
+                        }  
+                        ?>
+                    </datalist>
+
                 </div>
             </div>
             <div class="col-2">

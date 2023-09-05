@@ -8,7 +8,7 @@ if(isset($_POST['submit-files'])){
     $titles = $_POST['title'];
     $users  = $_POST['user'];
     $no_sections = count($titles);
-    $date = date('d-m-y', time());
+    $date = date("Y-m-d");
 
     echo "<h1>Document ID: {$doc_id}</h1>";
     echo "<h1>Number of Sections: {$no_sections}</h1>";

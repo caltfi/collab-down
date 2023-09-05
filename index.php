@@ -23,8 +23,7 @@
     if(isset($_SESSION['user_full_name'])){
         ?>
         <div class="row">
-            <h2 class="text-center mt-3 mb-3">Your Documents</h2>
-            <hr>
+            <h2 class="text-center mt-3 mb-5">Your Documents</h2>
         <?php
         $username = $_SESSION['username'];
 
@@ -62,7 +61,7 @@
                                 <?php if($document['documents_no_sections'] > 0){?>
                                     <li class="list-group-item">Word Count: <?php echo $document['total_word_count'] ?></li>
                                     <li class="list-group-item">No. of Users: <?php echo $document['user_count'] ?> users</li>
-                                    <li class="list-group-item">Last Updated: <?php echo date('d/m/Y', strtotime($most_recent_date)) ?></li>
+                                    <li class="list-group-item">Last Updated: <?php echo date("D j M, Y", strtotime($most_recent_date)) ?></li>
                                 <?php } ?>
                                 <li class="list-group-item"><a href="edit_document.php?doc_id=<?php echo $document['documents_id'] ?>" class="link-dark link-opacity-25-hover">Edit Document</a><br></li>
                                 <?php
@@ -104,7 +103,10 @@
         ?>
         <div class="row">
         <div class="col">
-            <h1 class='text-center mt-5 mb-5'>Welcome to #Collabdown!</h1>
+            <h1 class='text-center mt-5 mb-5'>Welcome to</h1>
+            <div class="d-flex justify-content-center">
+                <img src="./assets/logo_black.png" alt="Collabdown Logo" height="150">
+            </div>
             <h2 class='text-center mb-5'><strong>Log-In</strong> to get started.</h2>
             <div class="text-center" style="margin-top: 35px; margin-right: 580px;">
                 <img src='assets/arrow.jpg' height="200" style="transform: rotate(-45deg); opacity: 0.6;" alt='Arrow'>
