@@ -37,7 +37,15 @@ foreach($documents as $document){
                         <h5 class="border-bottom pb-2 ms-2 text-muted">Created by <?php echo $admin_info[0] ?> <em>@<?php echo $admin ?></em> on <?php echo date("d/m/Y", strtotime($date_created)) ?></h5>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item text-muted d-flex align-items-center">
-                                <img src="assets/<?php echo $admin_info[1] ?>" alt="Profile Picture for <?php echo $admin_info[0] ?>" class="rounded-circle me-2 border border-2" width="40" height="40">
+                                <img 
+                                <?php 
+                                    if(file_exists("assets/user_prof/{$admin}/{$admin_info[1]}")){
+                                        echo "src='assets/user_prof/{$admin}/{$admin_info[1]}'";
+                                    }else{
+                                        echo "src='assets/user_prof/profile.jpg'";
+                                    }
+                                ?> 
+                                alt="Profile Picture for <?php echo $admin_info[0] ?>" class="rounded-circle me-2 border border-2" width="40" height="40">
                                 <span><h5>Document Admin:<br><strong><?php echo $admin_info[0] ?></strong></h5></span>
                             </li>
                             <li class="list-group-item d-flex align-items-center">

@@ -55,7 +55,15 @@ if(isset($_SESSION['username'])){
                                 <h5 class="border-bottom pb-2 ms-2 text-muted">Created by <?php echo $admin_info[0] ?> <em>@<?php echo $admin ?></em> on <?php echo date("d/m/Y", strtotime($date_created)) ?></h5>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item text-muted d-flex align-items-center">
-                                        <img src="assets/<?php echo $admin_info[1] ?>" alt="Profile Picture for <?php echo $admin_info[0] ?>" class="rounded-circle me-2 border border-2" width="40" height="40">
+                                        <img 
+                                        <?php 
+                                            if(file_exists("assets/user_prof/{$admin}/{$admin_info[1]}")){
+                                                echo "src='assets/user_prof/{$admin}/{$admin_info[1]}'";
+                                            }else{
+                                                echo "src='assets/user_prof/profile.jpg'";
+                                            }
+                                        ?> 
+                                        alt="Profile Picture for <?php echo $admin_info[0] ?>" class="rounded-circle me-2 border border-2" width="40" height="40">
                                        <span><h5>Document Admin:<br><strong><?php echo $admin_info[0] ?></strong></h5></span>
                                     </li>
                                     <li class="list-group-item d-flex align-items-center">
@@ -123,10 +131,64 @@ if(isset($_SESSION['username'])){
                     <div class="row d-flex justify-content-center mb-3 align-items-start">
                         <div class="col-2">
                             <div class="card p-4 mt-4">
-                                <img src="assets/<?php echo $user_prof_pic ?>" alt="Profile Picture for <?php echo $user_full_name ?>" class="rounded-circle me-2 border border-4" width="70" height="70">
+                                <img
+                                <?php 
+                                    if(file_exists("assets/user_prof/{$username}/{$user_prof_pic}")){
+                                        echo "src='assets/user_prof/{$username}/{$user_prof_pic}'";
+                                    }else{
+                                        echo "src='assets/user_prof/profile.jpg'";
+                                    }
+                                ?> 
+                                alt="Profile Picture for <?php echo $user_full_name ?>" class="rounded-circle me-2 border border-4" width="70" height="70">
                                 <strong><?php echo $user_full_name ?></strong>
                                 <p class="fs-6">@<?php echo $username ?></p>
+
+                                <!-- EDIT ASSIGNED USER FORM -->
+                                <form action="inc/edit_section.inc.php?doc_id=<?php echo $doc_id ?>" id="change_user_form" method="post" class="text-white mb-2 text-center" style="display: none;">
+                                    <label for="section_user" class="mb-3" aria-label="Change Assigned User"></label>    
+                                    <div class="input-group mb-3">
+                                        <input type="hidden" name="file_id" value="<?php echo $file_id ?>">
+                                        <input type="hidden" name="section_number" value="<?php echo $section_number ?>">
+                                        <input type="text" name="section_user" id="section_user_input" class="form-control" list="datalistOptions" placeholder="Change Users...">
+                                        <span class="input-group-text">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <datalist id="datalistOptions">
+                                        <?php 
+                                        //query to return all users from users table
+                                        $query = "SELECT * FROM users";
+                                        $result = mysqli_query($connection, $query);
+                                        if(!$result){
+                                            header("Location: edit_document.php?doc_id={$doc_id}&error=stmtfail");
+                                        }
+                                        $count = mysqli_num_rows($result);
+                    
+                                        if($count == 0){
+                                            echo "<li>No Results</li>";
+                                        }else{
+                                            while($row = mysqli_fetch_assoc($result)){
+                                                $username = $row['users_uid'];
+
+                                                echo "<option value='{$username}'>";
+                                            } 
+                                        }  
+                                        ?>
+                                    </datalist>
+                                </form>
+
                                 <hr>
+
+                                <!-- EDIT SECTION TITLE FORM -->
+                                <form action="inc/edit_section.inc.php?doc_id=<?php echo $doc_id ?>" id="change_section_title_form" method="post" class="text-white mb-2 text-center" style="display: none;">
+                                    <label for="section_title" class="mb-3" aria-label="Change Section Title"></label>
+                                    <input type="hidden" name="file_id" value="<?php echo $file_id ?>">
+                                    <input type="hidden" name="section_number" value="<?php echo $section_number ?>">   
+                                    <input type="text" name="section_title" id="section_title_input" placeholder="Change Title..." class="form-control">
+                                </form>
+                                
                                 <p><h4><?php echo $title ?></h4> Section <?php echo $section_number ?></p>
                                 <p><h4><?php echo date("D j M, Y", strtotime($date_updated)) ?></h4> Last Updated</p>
                                 <p><h4><?php echo $word_count ?> words</h4> Word Count</p>
@@ -158,7 +220,7 @@ if(isset($_SESSION['username'])){
                                         </svg>
                                         Save
                                     </button>
-                                    <button type="submit" name="change-submit" class="btn btn-outline-secondary d-flex justify-content-center align-items-center mb-3">
+                                    <button type="button" id="change_section_button" class="btn btn-outline-secondary d-flex justify-content-center align-items-center mb-3">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill me-2" viewBox="0 0 16 16">
                                             <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
                                         </svg>
@@ -180,7 +242,7 @@ if(isset($_SESSION['username'])){
                                     <?php
                                 }elseif($session_username == $admin){
                                     ?>
-                                    <button type="submit" name="change-submit" class="btn btn-outline-secondary d-flex justify-content-center align-items-center mb-3">
+                                    <button type="button" id="change_section_button" class="btn btn-outline-secondary d-flex justify-content-center align-items-center mb-3">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill me-2" viewBox="0 0 16 16">
                                             <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
                                         </svg>

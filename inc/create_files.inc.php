@@ -19,6 +19,12 @@ if(isset($_POST['submit-files'])){
         $section_title = $titles[$i];
         $assigned_user = $users[$i];
 
+        //check if section title is valid (to avoid SQL injection)
+        if(!preg_match("/^[a-zA-Z0-9\s]*$/", $section_title)){
+            header("Location: ../edit_document.php?doc_id={$doc_id}&error=stmtfail");
+            exit();
+        }
+
         $file_id = "{$doc_id}_{$section_number}_" . uniqid();
         $md_file = "../mdfiles/{$file_id}.md";
         

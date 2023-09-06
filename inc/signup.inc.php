@@ -9,6 +9,12 @@ if(isset($_POST['submit'])){
     $password  = $_POST['password'];
     $confirm_pwd  = $_POST['confirm_password'];
 
+    //check name is valid (to avoid SQL injection)
+    if(!preg_match("/^[a-zA-Z0-9\s]*$/", $name)){
+        header("Location: ../signup.php?error=invalidusername");
+        exit();
+    }
+
     if(empty_signup_input($name, $user_name, $email, $password, $confirm_pwd) !== false){
         header("Location: ../signup.php?error=emptyinput");
         exit();

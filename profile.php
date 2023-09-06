@@ -10,7 +10,7 @@
     $username       = $_SESSION['username'];
     $user_full_name = $_SESSION['user_full_name'];
     $email          = $_SESSION['user_email'];
-    $profile_pic    = $_SESSION['user_prof_pic'];
+    $user_prof_pic  = $_SESSION['user_prof_pic'];
 
     //create query to get number of documents where user is the owner
     $query     = "SELECT * FROM documents WHERE documents_admin = ?;";
@@ -53,12 +53,24 @@
     ?>
     <div class="row justify-content-center">
         <div class="col-2">
-            <img src="assets/<?php echo $profile_pic ?>" height="200" class="rounded-circle border border-dark" alt="...">
+            <img 
+            <?php 
+                if(file_exists("assets/user_prof/{$username}/{$user_prof_pic}")){
+                    echo "src='assets/user_prof/{$username}/{$user_prof_pic}'";
+                }else{
+                    echo "src='assets/user_prof/profile.jpg'";
+                }
+            ?> 
+            height="200" width="200" class="rounded-circle border border-dark" alt="Profile Picture">
         </div>
         <div class="col-2">
             <h3><?php echo $user_full_name ?></h3>
             <p>@<?php echo $username ?></p>
-            <p>E-mail: <?php echo $email ?></p>
+            <hr>
+            <p>
+                <h3>E-mail</h3>
+            </p>
+            <p><?php echo $email ?></p>
             <hr>
             <p>
                 <h3>Stats</h3>

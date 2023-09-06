@@ -65,7 +65,7 @@
     <h2>Images</h2>
     <p>Here is how to place images:</p>
     <ul class="list-group">
-        <li class="list-group-item"><section><img src="assets/rubber_duck.png" style="width: 120px; height: 120px; margin-left: 100px;" alt="Alt Text"></section><br><pre>![Alt Text](rubber-duck.jpg)</pre></li>
+        <li class="list-group-item"><section><img src="assets/images/rubber_duck.png" style="width: 120px; height: 120px; margin-left: 100px;" alt="Alt Text"></section><br><pre>![Alt Text](rubber-duck.jpg)</pre></li>
     </ul>
     
     <h2>Blockquotes</h2>

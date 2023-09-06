@@ -59,6 +59,73 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    //allow admin to change section title and assigned user on edit doc page
+    const sectionTitleInput   = document.getElementById("section_title_input");
+    const sectionTitleForm    = document.getElementById("change_section_title_form");
+    const assignedUserInput   = document.getElementById("section_user_input");
+    const assignedUserForm    = document.getElementById("change_user_form");
+
+    const changeSectionButton = document.getElementById("change_section_button");
+
+    if(changeSectionButton){
+        if(sectionTitleInput && sectionTitleForm){
+            changeSectionButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                if (sectionTitleForm.style.display === "block") {
+                    sectionTitleForm.style.display = "none";
+                } else {
+                    sectionTitleForm.style.display = "block";
+                }
+                sectionTitleInput.focus();
+            });
+
+            sectionTitleInput.addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                event.preventDefault();
+                sectionTitleForm.submit();
+                }
+            });
+        }
+
+        if(assignedUserInput && assignedUserForm){
+            changeSectionButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                if (assignedUserForm.style.display === "block") {
+                    assignedUserForm.style.display = "none";
+                } else {
+                    assignedUserForm.style.display = "block";
+                }
+                assignedUserInput.focus();
+            });
+
+            assignedUserInput.addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                event.preventDefault();
+                assignedUserForm.submit();
+                }
+            });
+        }
+    }
+
+
+    //allows user to change full name on profile page
+    const nameInput = document.getElementById("full_name_text_input");
+    const nameForm  = document.getElementById("name_change_form");
+
+    if(nameInput && nameForm){
+        nameInput.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+            event.preventDefault();
+            nameForm.submit();
+            }
+        });
+    }
+
+    //For uploading user profile picture
+    document.getElementById("user_prof_pic").onchange = function() {
+        document.getElementById("user_prof_pic").form.submit();
+    };
+
     //For creating new sections
     const sectionContainer = document.querySelector('.sectionContainer');
     let sectionCount       = 1;

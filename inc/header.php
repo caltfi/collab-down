@@ -19,7 +19,7 @@
 <!--Navigation-->
 <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 270px; z-index:5;">
     <a href="index.php" class="d-flex align-items-center text-white text-decoration-none mt-3">
-        <img src="./assets/logo_white.png" alt="CollabDown Logo" height="75">
+        <img src="./assets/images/logo_white.png" alt="CollabDown Logo" height="75">
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto mt-4">
@@ -151,8 +151,15 @@
         <ul class="nav nav-pills">
         <?php
             if(isset($_SESSION['username'])){
-                $profile_pic = $_SESSION['user_prof_pic'];
-                echo "<li class='nav-item'><a class='nav-link text-white' href='profile.php'><img src='assets/{$profile_pic}' alt='' width='32' height='32' class='rounded-circle me-2'>Profile</a></li>";
+                $username      = $_SESSION['username'];
+                $user_prof_pic = $_SESSION['user_prof_pic'];
+                echo "<li class='nav-item'><a class='nav-link text-white' href='profile.php'><img ";
+                if(file_exists("assets/user_prof/{$username}/{$user_prof_pic}")){
+                    echo "src='assets/user_prof/{$username}/{$user_prof_pic}'";
+                }else{
+                    echo "src='assets/user_prof/profile.jpg'";
+                }
+                echo " alt='' width='32' height='32' class='rounded-circle me-2'>Profile</a></li>";
                 echo "<li class='nav-item'><a class='nav-link text-white' href='./inc/logout.inc.php'>Log-Out</a></li>";
             }else{
                 echo "<li class='nav-item me-3 ms-3'><a href='login.php'><button type='button' class='btn btn-light'>Log-In</button></a></li>";

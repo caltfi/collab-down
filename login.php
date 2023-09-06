@@ -16,16 +16,33 @@
             <?php
                 if(isset($_GET['error'])){
                     if($_GET['error'] == "emptyinput"){
-                        echo "<p>Please fill in all fields.</p>";
+                        echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                <strong>Error!</strong> Please fill in all fields.
+                                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                            </div>";
                     }elseif($_GET['error'] == "wronglogin"){
-                        echo "<p>Incorrect login information</p>";
+                        echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                <strong>Error!</strong> Incorrect login information.
+                                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                            </div>";
+                    }elseif($_GET['error'] == 'stmtfail'){
+                        echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                <strong>Error!</strong> Something went wrong. Please try again.
+                                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                            </div>";
                     }
                 }
                 if(isset($_GET['result'])){
                     if($_GET['result'] == "signup_success"){
-                        echo "<p>You have successfully created an account!</p>";
+                        echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+                                <strong>Success!</strong> You have created an account.
+                                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                            </div>";
                     }if($_GET['result'] == "pwd_reset_success"){
-                        echo "<p>Your password reset was successful!</p>";
+                        echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+                                <strong>Success!</strong> You have reset your password.
+                                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                            </div>";
                     }
                 }
             ?>

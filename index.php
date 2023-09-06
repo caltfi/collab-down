@@ -10,6 +10,11 @@
                     <strong>Success!</strong> You have created a new document.
                     <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
                 </div>";
+        }elseif($_GET['error'] == "stmtfail"){
+            echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                    <strong>Something went wrong!</strong> Please try again.
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                </div>";
         }
     }
     if(isset($_GET['doc'])){
@@ -41,18 +46,23 @@
                 mysqli_stmt_execute($prep_stat);
                 $result = mysqli_stmt_get_result($prep_stat);
                 $row = mysqli_fetch_assoc($result);
+                
+                //get most recent date from array $updated_dates
+                $most_recent_date = $row['files_date_updated'];
                 $updated_dates = array();
                 while($row = mysqli_fetch_assoc($result)){
                     array_push($updated_dates, $row['files_date_updated']);
                 }
+                
+                if(count($updated_dates) > 0){
+                    $most_recent_date = max($updated_dates);
+                }
                 mysqli_stmt_close($prep_stat);
-                //get most recent date from array $updated_dates
-                $most_recent_date = max($updated_dates);
             }
             ?>
                 <div class="col ms-2 me-1 mt-3 mb-4">
                     <div class="card border-top-0 border-dark-subtle shadow-lg mb-5 ms-5" style="width:25rem; height:35rem;">
-                        <img src="assets/spiral.jpg" class="card-img-top" alt="Document" style="border-bottom:medium dashed #8e8e8e;">
+                        <img src="assets/images/spiral.jpg" class="card-img-top" alt="Document" style="border-bottom:medium dashed #8e8e8e;">
                         <div class="card-body mt-3">
                             <h4 class="card-title ms-3"><strong><?php echo $document['documents_title'] ?></strong></h4>
                             <h6 class="card-subtitle ms-3">Created by <span class="fst-italic">@<?php echo $document['documents_admin'] ?></span> on <span class="fst-italic"><?php echo date('d/m/Y', strtotime($document['documents_date'])) ?></span></h6>
@@ -83,7 +93,7 @@
         ?>
             <div class="col ms-2 me-1 mt-3 mb-4">
                 <div class="card border-top-0 border-dark-subtle shadow-lg mb-5 ms-5" style="width:25rem; height:35rem;">
-                    <img src="assets/spiral.jpg" class="card-img-top" alt="Document" style="border-bottom:medium dashed #8e8e8e;">
+                    <img src="assets/images/spiral.jpg" class="card-img-top" alt="Document" style="border-bottom:medium dashed #8e8e8e;">
                     <a href="" class="text-body link-underline link-underline-opacity-0" id="new_doc_main_button"><div class="card-body mt-3">
                         <p class="card-text text-center mt-5">
                             <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-plus-lg mt-5" viewBox="0 0 16 16">
@@ -105,11 +115,11 @@
         <div class="col">
             <h1 class='text-center mt-5 mb-5'>Welcome to</h1>
             <div class="d-flex justify-content-center">
-                <img src="./assets/logo_black.png" alt="Collabdown Logo" height="150">
+                <img src="./assets/images/logo_black.png" alt="Collabdown Logo" height="150">
             </div>
             <h2 class='text-center mb-5'><strong>Log-In</strong> to get started.</h2>
             <div class="text-center" style="margin-top: 35px; margin-right: 580px;">
-                <img src='assets/arrow.jpg' height="200" style="transform: rotate(-45deg); opacity: 0.6;" alt='Arrow'>
+                <img src='assets/images/arrow.jpg' height="200" style="transform: rotate(-45deg); opacity: 0.6;" alt='Arrow'>
             </div>
         </div>
         <?php
