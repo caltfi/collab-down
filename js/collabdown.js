@@ -122,9 +122,15 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     //For uploading user profile picture
-    document.getElementById("user_prof_pic").onchange = function() {
-        document.getElementById("user_prof_pic").form.submit();
-    };
+    const userProfPic = document.getElementById("user_prof_pic");
+    const userProfPicForm = document.getElementById("user_prof_pic_form");
+
+    if(userProfPic){
+        userProfPic.addEventListener("change", function(event) {
+            event.preventDefault();
+            userProfPicForm.submit();
+        });
+    }
 
     //For creating new sections
     const sectionContainer = document.querySelector('.sectionContainer');

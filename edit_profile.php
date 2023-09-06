@@ -36,7 +36,7 @@
         ?>
         <div class="row d-flex align-content-start justify-content-center">
             <div class="col-2 d-flex align-content-between flex-wrap justify-content-center">
-                <form action="inc/edit_profile.inc.php" enctype="multipart/form-data"  method="post">
+                <form action="inc/edit_profile.inc.php" enctype="multipart/form-data" id="user_prof_pic_form"  method="post">
                 <img 
                 <?php 
                     if(file_exists("assets/user_prof/{$username}/{$user_prof_pic}")){
@@ -45,7 +45,7 @@
                         echo "src='assets/user_prof/profile.jpg'";
                     }
                 ?> 
-                height="200" width="200" class="rounded-circle border border-dark" alt="...">
+                height="200" width="200" class="rounded-circle border border-dark mb-3" alt="...">
                 <input type="hidden" name="username" value="<?php echo $username ?>">
                 <input type="file" name="user_prof_pic" id="user_prof_pic" accept=".jpg, .jpeg, .png" class="form-control">
                 </form>
@@ -59,7 +59,7 @@
                 <p><a href="./inc/logout.inc.php?source=reset_password" class="text-body">Reset your password</a></p>
                 <p><a href="./delete.php?user_id=<?php echo $username ?>" class="text-body">Delete your account</a></p>
                 <br>
-                <a href="profile.php" class="btn btn-secondary w-100">Cancel</a>
+                <a href="profile.php" class="btn btn-secondary w-100">Done</a>
             </div>
         </div>
         <?php 
