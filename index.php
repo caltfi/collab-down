@@ -35,7 +35,7 @@
         foreach($documents as $document){
 
             if($document['documents_no_sections'] > 0){
-                //get max files_date_updated
+                //get max files_date_updated and number of flags for the document
                 $query = "SELECT files_date_updated FROM files WHERE files_document_id = ?;";
                 $prep_stat = mysqli_stmt_init($connection);
                 if(!mysqli_stmt_prepare($prep_stat, $query)){
@@ -45,43 +45,80 @@
                 mysqli_stmt_bind_param($prep_stat, "i", $document['documents_id']);
                 mysqli_stmt_execute($prep_stat);
                 $result = mysqli_stmt_get_result($prep_stat);
-                $row = mysqli_fetch_assoc($result);
-                
-                //get most recent date from array $updated_dates
-                $most_recent_date = $row['files_date_updated'];
+
+                //get latest date
                 $updated_dates = array();
+
                 while($row = mysqli_fetch_assoc($result)){
                     array_push($updated_dates, $row['files_date_updated']);
                 }
                 
-                if(count($updated_dates) > 0){
+                if(!empty($updated_dates)){
                     $most_recent_date = max($updated_dates);
+                }else{
+                $most_recent_date = $document['documents_date'];
                 }
+
                 mysqli_stmt_close($prep_stat);
-            }
+                }
             ?>
                 <div class="col ms-2 me-1 mt-3 mb-4">
                     <div class="card border-top-0 border-dark-subtle shadow-lg mb-5 ms-5" style="width:25rem; height:35rem;">
                         <img src="assets/images/spiral.jpg" class="card-img-top" alt="Document" style="border-bottom:medium dashed #8e8e8e;">
                         <div class="card-body mt-3">
                             <h4 class="card-title ms-3"><strong><?php echo $document['documents_title'] ?></strong></h4>
-                            <h6 class="card-subtitle ms-3">Created by <span class="fst-italic">@<?php echo $document['documents_admin'] ?></span> on <span class="fst-italic"><?php echo date('d/m/Y', strtotime($document['documents_date'])) ?></span></h6>
-                            <ul class="list-group list-group-flush mt-3">
-                                <li class="list-group-item">This is a short document synopsis, maybe an abstract. TBD.</li>
-                                <?php if($document['documents_no_sections'] > 0){?>
-                                    <li class="list-group-item">Word Count: <?php echo $document['total_word_count'] ?></li>
-                                    <li class="list-group-item">No. of Users: <?php echo $document['user_count'] ?> users</li>
+                            <h6 class="card-subtitle ms-3">Created by <span class="fst-italic">@<?php echo $document['documents_admin'] ?></span> on <span class="fst-italic"><?php echo date("D j M, Y", strtotime($document['documents_date'])) ?></span></h6>
+                            <ul class="list-group list-group-flush">
+                                <?php 
+                                if($document['documents_no_sections'] > 0){
+                                    ?>
                                     <li class="list-group-item">Last Updated: <?php echo date("D j M, Y", strtotime($most_recent_date)) ?></li>
-                                <?php } ?>
-                                <li class="list-group-item"><a href="edit_document.php?doc_id=<?php echo $document['documents_id'] ?>" class="link-dark link-opacity-25-hover">Edit Document</a><br></li>
+                                    <li class="list-group-item"><h6><strong><?php echo $document['documents_no_sections'] ?></strong> sections</h6></li>
+                                    <li class="list-group-item"><h6><strong><?php echo $document['total_word_count'] ?></strong> words</h6></li>
+                                    <li class="list-group-item"><h6><strong>Something</strong> else</h6></li>
+                                    <li class="list-group-item mb-2"><h6><strong>Etce</strong>tera</h6></li>
+                                    <?php 
+                                }else{
+                                    ?>
+                                    <li class="list-group-item mb-2">
+                                    <li class="list-group-item mb-2">
+                                    <li class="list-group-item mb-2">
+                                    <li class="list-group-item mb-2">
+                                    <li class="list-group-item mb-2">
+                                    <li class="list-group-item mb-2">
+                                    <li class="list-group-item mb-2">
+                                    <li class="list-group-item mb-2">
+                                    <li class="list-group-item mb-2">
+                                    <li class="list-group-item mb-2">
+                                    <li class="list-group-item mb-2">
+                                    <li class="list-group-item mb-1">
+                                    <?php
+                                }
+                                ?>
+                                <li class="list-group-item mb-2">
+                                <li class="list-group-item mb-1">
+                                <a href="edit_document.php?doc_id=<?php echo $document['documents_id'] ?>" class="btn btn-outline-dark d-flex justify-content-center align-items-center"> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square me-2" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                    </svg>
+                                    Edit
+                                </a>
+                                </li>
+                                
                                 <?php
                                     if($document['documents_no_sections'] > 0){ 
                                         ?>
-                                        <li class="list-group-item"><a href="view_document.php?doc_id=<?php echo $document['documents_id'] ?>" class="link-dark link-opacity-25-hover">View Document</a></li>
+                                        <li class="list-group-item mb-2">
+                                        <a href='view_document.php?doc_id=<?php echo $document['documents_id'] ?>' class="btn btn-outline-dark d-flex justify-content-center align-items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill me-2" viewBox="0 0 16 16">
+                                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                                            </svg>
+                                            View
+                                        </a> 
+                                        </li> 
                                         <?php
-                                    }
-                                    if($document['documents_admin'] == $username){
-                                        echo "<li class='list-group-item'><a href='delete.php?doc_id={$document['documents_id']}' class='link-dark link-opacity-25-hover'>Delete Document</a></li>";
                                     }
                                 ?>
                             </ul>
@@ -104,7 +141,7 @@
                     </div></a>
 
                     <form action="inc/new_document.inc.php" id="new_doc_form_2" method="post" class="text-white mb-2 text-center" style="display: none;">
-                        <input type="text" name="title" id="title_text_input_2" placeholder="Title..." style="width: 300px;">
+                        <input type="text" name="title" id="title_text_input_2" placeholder="Title..." style="width: 300px;"  autocomplete="off">
                     </form>
                 </div>
             </div>

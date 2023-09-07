@@ -35,7 +35,7 @@ if(isset($_POST['delete-submit'])){
     $doc_id = $_POST['doc_id'];
     $file_id   = $_POST['file_id'];
 
-    header("Location: ../delete.php?doc_id={$doc_id}&file={$file}");
+    header("Location: ../delete.php?doc_id={$doc_id}&file={$file_id}");
     exit();
 }
 
