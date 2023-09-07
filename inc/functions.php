@@ -98,14 +98,14 @@ function create_file($filename) {
 }
 
 //Function to insert file data into database
-function insert_file_data($connection, $file_id, $file_title, $assign_uid, $date, $document_id, $section_number) {
-    $query = "INSERT INTO files (files_id, files_title, files_assign_uid, files_date_created, files_date_updated, files_document_id, files_section_number) VALUES (?, ?, ?, ?, ?, ?, ?);";
+function insert_file_data($connection, $file_id, $file_title, $assign_uid, $date, $document_id, $section_number, $status) {
+    $query = "INSERT INTO files (files_id, files_title, files_assign_uid, files_date_created, files_date_updated, files_document_id, files_section_number, files_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
     $prep_stat = mysqli_stmt_init($connection);
     if (!mysqli_stmt_prepare($prep_stat, $query)) {
         header("Location: ../edit_document.php?doc_id={$document_id}&error=stmtfail");
         exit();
     }
-    mysqli_stmt_bind_param($prep_stat, "sssssii", $file_id, $file_title, $assign_uid, $date, $date, $document_id, $section_number);
+    mysqli_stmt_bind_param($prep_stat, "sssssiis", $file_id, $file_title, $assign_uid, $date, $date, $document_id, $section_number, $status);
     mysqli_stmt_execute($prep_stat);
     mysqli_stmt_close($prep_stat);
 }

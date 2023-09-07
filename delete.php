@@ -33,9 +33,11 @@ if(isset($_SESSION['username'])){
                             <p>Are you sure you want to delete this document? You may lose your work and the work of other users.</p>
                             <p><strong>This will premanently delete the document and all corresponding files associated with the document.</strong></p>
                             <hr class="mb-3">
-                            <form action="inc/delete_document.inc.php?doc_id=<?php echo $doc_id ?>&admin=true" method="post" class=" d-flex justify-content-between align-items-center">
+                            <form action="inc/delete_document.inc.php" method="post" class=" d-flex justify-content-between align-items-center">
                                 <a href="index.php" class="btn btn-outline-secondary">Go Back</a>
-                                <button type="submit" name="submit" class="btn btn-dark" >Delete</button>
+                                <input type="hidden" name="doc_id" value="<?php echo $doc_id ?>">
+                                <input type="hidden" name="admin" value="<?php echo $admin ?>">
+                                <button type="submit" name="submit-delete-document" class="btn btn-dark" >Delete</button>
                             </form>
                         </div>
                     </div>   
@@ -60,9 +62,10 @@ if(isset($_SESSION['username'])){
                             <p>Are you sure you want to delete your user account? You may lose your work and the work of other users.</p>
                             <p><strong>By proceeding you will premanently delete your user account, as well as any documents of which you are an administrator and any corresponding files associated with the document.</strong></p>
                             <hr class="mb-3">
-                            <form action="inc/delete_document.inc.php?doc_id=<?php echo $doc_id ?>&admin=true" method="post" class=" d-flex justify-content-between align-items-center">
+                            <form action="inc/delete_user.inc.php" method="post" class=" d-flex justify-content-between align-items-center">
                                 <a href="edit_profile.php" class="btn btn-outline-secondary">Go Back</a>
-                                <button type="submit" name="submit" class="btn btn-dark" >Delete</button>
+                                <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
+                                <button type="submit" name="submit-delete-user" class="btn btn-dark" >Delete</button>
                             </form>
                         </div>
                     </div>   

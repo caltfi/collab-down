@@ -17,11 +17,11 @@
             <div class="col-6">
                 <div class="card p-4 mt-4">
                     <label for="title" class="mb-3" aria-label="Title"></label>
-                    <input type="text" name="title[0]" id="title1" class="form-control mb-3" placeholder="Title...">
+                    <input type="text" name="title[0]" id="title1" class="form-control mb-3" placeholder="Title..." autocomplete="off">
                     
                     <label for="user" class="mb-3" aria-label="User"></label>
                     <div class="input-group mb-3">
-                        <input type="text" name="user[0]" id="user1" class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Search for Users...">
+                        <input type="text" name="user[0]" id="user1" class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Search for Users..." autocomplete="off">
                         <span class="input-group-text">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>

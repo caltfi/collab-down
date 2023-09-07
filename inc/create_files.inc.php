@@ -9,6 +9,7 @@ if(isset($_POST['submit-files'])){
     $users  = $_POST['user'];
     $no_sections = count($titles);
     $date = date("Y-m-d");
+    $status = "pending";
 
     echo "<h1>Document ID: {$doc_id}</h1>";
     echo "<h1>Number of Sections: {$no_sections}</h1>";
@@ -25,13 +26,13 @@ if(isset($_POST['submit-files'])){
             exit();
         }
 
-        $file_id = "{$doc_id}_{$section_number}_" . uniqid();
+        $file_id = "DOC_{$doc_id}_" . uniqid('FILE_', true);
         $md_file = "../mdfiles/{$file_id}.md";
         
         //file creation and insertion into database
         if(create_file($md_file)){
             //create_file($md_file);
-            insert_file_data($connection, $file_id, $section_title, $assigned_user, $date, $doc_id, $section_number);
+            insert_file_data($connection, $file_id, $section_title, $assigned_user, $date, $doc_id, $section_number, $status);
             add_section_to_doc($connection, $doc_id);
         }else{
             header("Location: ../edit_document.php?doc_id={$doc_id}&error=stmtfail");
