@@ -72,33 +72,6 @@ if(isset($_SESSION['username'])){
             exit();
         }
 
-        //get all files with doc_id = $doc_id where the section number is > $section_number
-        $query = "SELECT files_id, files_section_number FROM files WHERE files_document_id = ? AND files_section_number > ?;";
-        $prep_stat = mysqli_stmt_init($connection);
-        if(!mysqli_stmt_prepare($prep_stat, $query)){
-            header("Location: edit_document.php?doc_id=$doc_id&error=stmtfail");
-            exit();
-        }
-        mysqli_stmt_bind_param($prep_stat, "ii", $doc_id, $section_number);
-        mysqli_stmt_execute($prep_stat);
-        $result = mysqli_stmt_get_result($prep_stat);
-        while($row = mysqli_fetch_assoc($result)){
-            $file_id = $row['files_id'];
-            $file_section_no = $row['files_section_number'];
-            $new_section_no = $file_section_no - 1;
-
-            //update the section number of each file
-            $query = "UPDATE files SET files_section_number = ? WHERE files_id = ?;";
-            $prep_stat = mysqli_stmt_init($connection);
-            if(!mysqli_stmt_prepare($prep_stat, $query)){
-                header("Location: edit_document.php?doc_id=$doc_id&error=stmtfail");
-                exit();
-            }
-            mysqli_stmt_bind_param($prep_stat, "ii", $new_section_no, $file_id);
-            mysqli_stmt_execute($prep_stat);
-            mysqli_stmt_close($prep_stat);
-        }
-
         //delete the file
         if(unlink($file_path)){
             //delete the file from the database
@@ -108,12 +81,35 @@ if(isset($_SESSION['username'])){
                 header("Location: edit_document.php?doc_id=$doc_id&error=stmtfail");
                 exit();
             }
-            header("Location: edit_document.php?doc_id=$doc_id&section=deleted");
-            exit();
         }else{
             header("Location: edit_document.php?doc_id=$doc_id&error=stmtfail");
             exit();
+        }  
+
+        //using the section number, update the section numbers of all files with section numbers > $section_number to be -1
+        $query = "UPDATE files SET files_section_number = files_section_number - 1 WHERE files_document_id = ? AND files_section_number > ?;";
+        $prep_stat = mysqli_stmt_init($connection);
+        if(!mysqli_stmt_prepare($prep_stat, $query)){
+            header("Location: edit_document.php?doc_id=$doc_id&error=stmtfail");
+            exit();
         }
+        mysqli_stmt_bind_param($prep_stat, "ii", $doc_id, $section_number);
+        mysqli_stmt_execute($prep_stat);
+        mysqli_stmt_close($prep_stat);
+
+        //using doc id update the number of sections in the document to be -1
+        $query = "UPDATE documents SET documents_sections = documents_sections - 1 WHERE documents_id = ?;";
+        $prep_stat = mysqli_stmt_init($connection);
+        if(!mysqli_stmt_prepare($prep_stat, $query)){
+            header("Location: edit_document.php?doc_id=$doc_id&error=stmtfail");
+            exit();
+        }
+        mysqli_stmt_bind_param($prep_stat, "i", $doc_id);
+        mysqli_stmt_execute($prep_stat);
+        mysqli_stmt_close($prep_stat);
+          
+        header("Location: edit_document.php?doc_id=$doc_id&section=deleted");
+        exit();
     }
 }else{
     header("Location: index.php");

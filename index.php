@@ -91,7 +91,6 @@
                                     <li class="list-group-item mb-2">
                                     <li class="list-group-item mb-2">
                                     <li class="list-group-item mb-2">
-                                    <li class="list-group-item mb-1">
                                     <?php
                                 }
                                 ?>

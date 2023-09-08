@@ -36,7 +36,7 @@ if(isset($_GET['section'])){
                 <strong>Success!</strong> You have approved a document section.
                 <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
             </div>";
-    }elseif($GET['section'] == "changed"){
+    }elseif($_GET['section'] == "changed"){
         echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
                 <strong>Success!</strong> You have changed a document section.
                 <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>

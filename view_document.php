@@ -154,11 +154,18 @@ foreach($documents as $document){
                     $Parsedown = new Parsedown();
                     $Parsedown -> setSafeMode(true);
                     echo $Parsedown->text(file_get_contents($md_file));
-                }else{
+                }elseif($status == 'flagged'){
                     ?>
                     <div class="container-fluid bg-warning-subtle rounded p-3 mt-4 mb-4" style="border: 5px var(--bs-warning-border-subtle) solid">
                         <h3 class="text-center mb-3"><?php echo $title?></h3>
-                        <p class='text-center'><strong>Status: <?php echo $status ?>.</strong> This section has not been approved yet by the document owner.</p>
+                        <p class='text-center'><strong>Section has been flagged.</strong> This section has not been approved yet by the document admin.</p>
+                    </div>
+                    <?php
+                }elseif($status == 'pending'){
+                    ?>
+                    <div class="container-fluid rounded p-3 mt-4 mb-4" style="background: var( --bs-secondary-bg); border: 5px var(--bs-border-color) solid;">
+                        <h3 class="text-center mb-3"><?php echo $title?></h3>
+                        <p class='text-center'><strong>Status is pending.</strong> This section is awaiting action from the document admin.</p>
                     </div>
                     <?php
                 }
