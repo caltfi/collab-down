@@ -4,17 +4,17 @@
     <div class="row d-flex justify-content-center mb-3 align-items-start section">
         <div class="col-2">
             <div class="card p-4 mt-4">
-                <h3 class="text-center">Section <?php echo $section_count_plusone ?></h3>
+                <h3 class="text-center">Section 1</h3>
             </div>
         </div>
         <div class="col-6">
             <div class="card p-4 mt-4">
-            <label for="title<?php echo $section_count_plusone ?>" class="mb-3" aria-label="Title"></label>
-            <input type="text" name="title[<?php echo $section_count_plusone ?>]" id="title<?php echo $section_count_plusone ?>" class="form-control mb-3" placeholder="Title..."  autocomplete="off">
+            <label for="title" class="mb-3" aria-label="Title"></label>
+            <input type="text" name="title[0]" id="title" class="form-control mb-3" placeholder="Title..."  autocomplete="off">
 
-            <label for="user<?php echo $section_count_plusone ?>" class="mb-3" aria-label="User"></label>
+            <label for="user" class="mb-3" aria-label="User"></label>
             <div class="input-group mb-3">
-                <input type="text" name="user[<?php echo $section_count_plusone ?>]" id="user<?php echo $section_count_plusone ?>" class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Search for Users..."  autocomplete="off">
+                <input type="text" name="user[0]" id="user" class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Search for Users..."  autocomplete="off">
                 <span class="input-group-text">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -35,9 +35,10 @@
                     echo "<li><h1>No Results</h1></li>";
                 }else{
                     while($row = mysqli_fetch_assoc($result)){
-                        $username = $row['users_uid'];
+                        $all_users_name = $row['users_name'];
+                        $all_users_uid  = $row['users_uid'];
 
-                        echo "<option value='{$username}'>";
+                        echo "<option value='{$all_users_uid}'>{$all_users_name} {$all_users_uid}</option>";
                     } 
                 }  
                 ?>
@@ -72,7 +73,8 @@
     <div class="col-10">
         <div class="card p-4 mt-4 mb-5">
             <p class="card-text text-center w-40">
-            <input type="submit" name="submit-files" class="btn btn-lg btn-secondary" value="Add Sections to Document">
+                <input type="hidden" name="no_existing_sections" value="<?php echo $sections ?>">
+            <input type="submit" name="submit-add-files" class="btn btn-lg btn-secondary" value="Add Sections to Document">
             </p>
         </div>
     </div>

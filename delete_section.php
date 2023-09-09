@@ -98,7 +98,7 @@ if(isset($_SESSION['username'])){
         mysqli_stmt_close($prep_stat);
 
         //using doc id update the number of sections in the document to be -1
-        $query = "UPDATE documents SET documents_sections = documents_sections - 1 WHERE documents_id = ?;";
+        $query = "UPDATE documents SET documents_no_sections = documents_no_sections - 1 WHERE documents_id = ?;";
         $prep_stat = mysqli_stmt_init($connection);
         if(!mysqli_stmt_prepare($prep_stat, $query)){
             header("Location: edit_document.php?doc_id=$doc_id&error=stmtfail");

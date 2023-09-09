@@ -67,9 +67,10 @@
                             echo "<li><h1>No Results</h1></li>";
                         }else{
                             while($row = mysqli_fetch_assoc($result)){
-                                $username = $row['users_uid'];
+                                $all_users_name = $row['users_name'];
+                                $all_users_uid  = $row['users_uid'];
 
-                                echo "<option value='{$username}'>";
+                                echo "<option value='{$all_users_uid}'>{$all_users_name} {$all_users_uid}</option>";
                             } 
                         }  
                         ?>

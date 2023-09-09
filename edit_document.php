@@ -11,6 +11,14 @@ if(isset($_GET['error'])){
         echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
                 <strong>Something went wrong!</strong> Please try again.
                 <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
+    }elseif($_GET['error'] == 'invalidtitle'){
+        echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                <strong>Invalid Title!</strong> Titles must contain valid characters only. Please try again.
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
+    }elseif($_GET['error'] == 'invaliduser'){
+        echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                <strong>Invalid User!</strong> Please assign a valid user to the section.
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
     }
 }
 if(isset($_GET['save'])){
@@ -187,26 +195,21 @@ if(isset($_SESSION['username'])){
                 while($row = mysqli_fetch_assoc($result)){
                     $file_id        = $row['files_id'];
                     $title          = $row['files_title'];
-                    $username       = $row['files_assign_uid'];
                     $date_created   = $row['files_date_created'];
                     $date_updated   = $row['files_date_updated'];
                     $section_number = $row['files_section_number'];
                     $status         = $row['files_status'];
+                    
+                    $username       = $row['files_assign_uid'];
 
-                    //query to get user profile pic and full name from users table where users_uid = $username
-                    $query = "SELECT users_profile_pic, users_name FROM users WHERE users_uid = ?;";
-                    $prep_stat = mysqli_stmt_init($connection);
-                    if(!mysqli_stmt_prepare($prep_stat, $query)){
-                        header("Location: edit_document.php?doc_id={$doc_id}&error=stmtfail");
+                    $user = user_name_exists($connection, $username, $username, 'edit_document');
+                    if($user === false){
+                        header("Location: index.php?error=stmtfail");
                         exit();
                     }
-                    mysqli_stmt_bind_param($prep_stat, "s", $username);
-                    mysqli_stmt_execute($prep_stat);
-                    $result2 = mysqli_stmt_get_result($prep_stat);
-                    $row2 = mysqli_fetch_assoc($result2);
 
-                    $user_prof_pic  = $row2['users_profile_pic'];
-                    $user_full_name = $row2['users_name'];
+                    $user_prof_pic  = $user['users_profile_pic'];
+                    $user_full_name = $user['users_name'];
 
                     //get file content
                     $file_path      = "./mdfiles/{$file_id}.md";
@@ -259,9 +262,10 @@ if(isset($_SESSION['username'])){
                                             echo "<li>No Results</li>";
                                         }else{
                                             while($row3 = mysqli_fetch_assoc($result3)){
-                                                $all_users = $row3['users_uid'];
+                                                $all_users_name = $row3['users_name'];
+                                                $all_users_uid  = $row3['users_uid'];
 
-                                                echo "<option value='{$all_users}'>";
+                                                echo "<option value='{$all_users_uid}'>{$all_users_name} {$all_users_uid}</option>";
                                             } 
                                         }  
                                         ?>
@@ -338,7 +342,6 @@ if(isset($_SESSION['username'])){
 
                 if($session_username == $admin){
                     //Section addition form at end if the user is the document admin
-                    $section_count_plusone = $sections + 1;
                     include "inc/add_sections.inc.php";
                 }
             }elseif($sections == 0){
