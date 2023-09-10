@@ -16,6 +16,11 @@ if(isset($_POST['submit-files'])){
         $section_title = $titles[$i];
         $assigned_user = $users[$i];
 
+        if(empty($section_title) || empty($assigned_user)){
+            header("Location: ../edit_document.php?doc_id={$doc_id}&error=emptyfields");
+            exit();
+        }
+
         //check if section title is valid (to avoid SQL injection)
         if(!preg_match("/^[a-zA-Z0-9\s]*$/", $section_title)){
             header("Location: ../edit_document.php?doc_id={$doc_id}&error=invalidtitle");
@@ -62,6 +67,11 @@ if(isset($_POST['submit-files'])){
     for($i = 0; $i < $no_new_sections; $i++){
         $section_title = $titles[$i];
         $assigned_user = $users[$i];
+
+        if(empty($section_title) || empty($assigned_user)){
+            header("Location: ../edit_document.php?doc_id={$doc_id}&error=emptyfields");
+            exit();
+        }
 
         //check if section title is valid (to avoid SQL injection)
         if(!preg_match("/^[a-zA-Z0-9\s]*$/", $section_title)){

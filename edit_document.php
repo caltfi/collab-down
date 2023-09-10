@@ -19,6 +19,10 @@ if(isset($_GET['error'])){
         echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
                 <strong>Invalid User!</strong> Please assign a valid user to the section.
                 <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
+    }elseif($_GET['error'] == 'emptyfields'){
+        echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                <strong>Empty Fields!</strong> Please fill in all fields.
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
     }
 }
 if(isset($_GET['save'])){
@@ -66,12 +70,12 @@ if(isset($_SESSION['username'])){
     foreach($documents as $document){
         if($document['documents_id'] == $doc_id){
             //using the doc_id to get the document info
-            $title = $document['documents_title'];
-            $date_created = $document['documents_date'];
+            $title            = $document['documents_title'];
+            $date_created     = $document['documents_date'];
             $total_word_count = $document['total_word_count'];
             $total_user_count = $document['user_count'];
-            $sections = $document['documents_no_sections'];
-            $admin = $document['documents_admin'];
+            $sections         = $document['documents_no_sections'];
+            $admin            = $document['documents_admin'];
 
             //get max files_date_updated and number of flags for the document
             $query = "SELECT files_date_updated, files_status FROM files WHERE files_document_id = ?;";
@@ -116,9 +120,10 @@ if(isset($_SESSION['username'])){
                             <div class="col">
                                 <h1 class="pb-2 ms-2" id="doc_title_display" style="display:block"><?php echo $title; ?></h1>
 
+                                <!-- EDIT DOCUMENT TITLE FORM -->
                                 <form action="inc/change_document.inc.php?doc_id=<?php echo $doc_id ?>" method="post" id="change_title_form" style="display:none">
                                     <label for="doc_title" aria-label="Input to Change Document Title"></label>
-                                    <input type="text" name="doc_title" id="doc_title_input" placeholder="Edit Title..." class="form-control form-control-lg mb-2">
+                                    <input type="text" name="doc_title" id="doc_title_input" placeholder="Change Title..." class="form-control form-control-lg mb-2 border rounded border-dark" autocomplete="off">
                                 </form>
 
                                 <ul class="list-group list-group-flush">
@@ -143,12 +148,43 @@ if(isset($_SESSION['username'])){
                                        <span><h5>Document Admin:<br><strong><?php echo $admin_info[0] ?></strong></h5></span>
                                     </li>
 
-                                    <form action="inc/change_document.inc.php?doc_id=<?php echo $doc_id ?>" method="post" id="change_admin_form" style="display:none">
-                                        <li class="list-group-item">
+                                <!-- CHANGE DOCUMENT ADMIN FORM -->
+                                    <li class="list-group-item">
+                                        <form action="inc/change_document.inc.php?doc_id=<?php echo $doc_id ?>" method="post" id="change_admin_form" style="display:none">
                                             <label for="new_admin" aria-label="Input to Change Document Admin"></label>
-                                            <input type="text" name="new_admin" id="new_admin_input" placeholder="Change Admin..." class="form-control form-control-lg mb-2">
-                                        </li>
-                                    </form>
+                                            <div class="input-group border rounded border-dark">
+                                                <input type="text" name="new_admin" id="new_admin_input" placeholder="Change Admin..." list="datalistOptions" class="form-control form-control-lg border rounded-start border-dark" autocomplete="off">
+                                                <span class="input-group-text">  
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <datalist id="datalistOptions">
+                                                <?php 
+                                                //query to return all users from users table
+                                                $query_new_admin = "SELECT * FROM users";
+                                                $result_new_admin = mysqli_query($connection, $query_new_admin);
+                                                if(!$result_new_admin){
+                                                    header("Location: edit_document.php?doc_id={$doc_id}&error=stmtfail");
+                                                }
+                                                $count_new_admin = mysqli_num_rows($result_new_admin);
+                            
+                                                if($count_new_admin == 0){
+                                                    echo "<li>No Results</li>";
+                                                }else{
+                                                    while($row_new_admin = mysqli_fetch_assoc($result_new_admin)){
+                                                        $all_users_name = $row_new_admin['users_name'];
+                                                        $all_users_uid  = $row_new_admin['users_uid'];
+
+                                                        echo "<option value='{$all_users_uid}'>{$all_users_name} {$all_users_uid}</option>";
+                                                    } 
+                                                }  
+                                                ?>
+                                            </datalist>
+                                        </form>
+                                    </li>
+                                    
 
                                     <li class="list-group-item d-flex align-items-center">
                                         <span class="badge text-bg-light p-2 me-4"><h5><strong><?php echo $sections ?></strong> sections</h5></span>
@@ -245,6 +281,7 @@ if(isset($_SESSION['username'])){
                     <div class="row d-flex justify-content-center mb-3 align-items-start">
                         <div class="col-2">
                             <div class="card p-4 mt-4">
+                            <div class="card-body d-flex align-items-start flex-column section_user_display">
                                 <img
                                 <?php 
                                     if(file_exists("assets/user_prof/{$username}/{$user_prof_pic}")){
@@ -253,19 +290,20 @@ if(isset($_SESSION['username'])){
                                         echo "src='assets/user_prof/profile.jpg'";
                                     }
                                 ?> 
-                                alt="Profile Picture for <?php echo $user_full_name ?>" class="rounded-circle me-2 border border-4" width="70" height="70">
-                                <strong><?php echo $user_full_name ?></strong>
-                                <p class="fs-6">@<?php echo $username ?></p>
+                                alt="Profile Picture for <?php echo $user_full_name ?>" class="rounded-circle me-2 border border-4" width="70" height="70"  style="display:block;">
+                                <strong  style="display:block;"><?php echo $user_full_name ?></strong>
+                                <p class="fs-6"  style="display:block;">@<?php echo $username ?></p>
+                                </div>
 
                                 <!-- EDIT ASSIGNED USER FORM -->
-                                <form action="inc/edit_section.inc.php" id="change_user_form" method="post" class="text-white mb-2 text-center" style="display: none;">
-                                    <label for="section_user" class="mb-3" aria-label="Change Assigned User"></label>    
-                                    <div class="input-group mb-3">
+                                <form action="inc/edit_section.inc.php" method="post" class="text-white text-center change_user_form" style="display: none;">
+                                    <label for="section_user_input[<?php echo $section_number - 1 ?>]" class="mb-3" aria-label="Change Assigned User"></label>    
+                                    <div class="input-group border rounded border-dark">
                                         <input type="hidden" name="doc_id" value="<?php echo $doc_id ?>">
                                         <input type="hidden" name="admin" value="<?php echo $admin ?>">
                                         <input type="hidden" name="file_id" value="<?php echo $file_id ?>">
                                         <input type="hidden" name="section_number" value="<?php echo $section_number ?>">
-                                        <input type="text" name="section_user" id="section_user_input" class="form-control" list="datalistOptions" placeholder="Change Users...">
+                                        <input type="text" name="section_user" id="section_user_input[<?php echo $section_number - 1 ?>]" class="form-control border rounded-start border-dark section_user_input" list="datalistOptions" placeholder="Change User..." autocomplete="off">
                                         <span class="input-group-text">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -275,19 +313,19 @@ if(isset($_SESSION['username'])){
                                     <datalist id="datalistOptions">
                                         <?php 
                                         //query to return all users from users table
-                                        $query = "SELECT * FROM users";
-                                        $result3 = mysqli_query($connection, $query);
-                                        if(!$result3){
+                                        $query_all_users = "SELECT * FROM users";
+                                        $result_all_users = mysqli_query($connection, $query_all_users);
+                                        if(!$result_all_users){
                                             header("Location: edit_document.php?doc_id={$doc_id}&error=stmtfail");
                                         }
-                                        $count = mysqli_num_rows($result3);
+                                        $count = mysqli_num_rows($result_all_users);
                     
                                         if($count == 0){
                                             echo "<li>No Results</li>";
                                         }else{
-                                            while($row3 = mysqli_fetch_assoc($result3)){
-                                                $all_users_name = $row3['users_name'];
-                                                $all_users_uid  = $row3['users_uid'];
+                                            while($row_all_users = mysqli_fetch_assoc($result_all_users)){
+                                                $all_users_name = $row_all_users['users_name'];
+                                                $all_users_uid  = $row_all_users['users_uid'];
 
                                                 echo "<option value='{$all_users_uid}'>{$all_users_name} {$all_users_uid}</option>";
                                             } 
@@ -297,16 +335,16 @@ if(isset($_SESSION['username'])){
                                 </form>
                                 <hr>
                                 <!-- EDIT SECTION TITLE FORM -->
-                                <form action="inc/edit_section.inc.php" id="change_section_title_form" method="post" class="text-white mb-2 text-center" style="display: none;">
-                                    <label for="section_title" class="mb-3" aria-label="Change Section Title"></label>
+                                <form action="inc/edit_section.inc.php" method="post" class="text-white text-center change_section_title_form" style="display: none;">
+                                    <label for="section_title_input[<?php echo $section_number - 1 ?>]" aria-label="Change Section Title"></label>
                                     <input type="hidden" name="doc_id" value="<?php echo $doc_id ?>">
                                     <input type="hidden" name="admin" value="<?php echo $admin ?>">
                                     <input type="hidden" name="file_id" value="<?php echo $file_id ?>">
                                     <input type="hidden" name="section_number" value="<?php echo $section_number ?>">   
-                                    <input type="text" name="section_title" id="section_title_input" placeholder="Change Title..." class="form-control">
+                                    <input type="text" name="section_title" id="section_title_input[<?php echo $section_number - 1 ?>]" placeholder="Change Title..." class="form-control section_title_input border border-dark" autocomplete="off">
                                 </form>
                                 
-                                <p><h4><?php echo $title ?></h4> Section <?php echo $section_number ?></p>
+                                <p><h4 class="section_title_display" style="display:block;"><?php echo $title ?></h4> Section <?php echo $section_number ?></p>
                                 <p><h4><?php echo date("D j M, Y", strtotime($date_updated)) ?></h4> Last Updated</p>
                                 <p><h4><?php echo $word_count ?> words</h4> Word Count</p>
                                 <p><h4><?php 

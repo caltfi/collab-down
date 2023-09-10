@@ -37,7 +37,7 @@ if(isset($_SESSION['username'])){
         mysqli_stmt_execute($prep_stat);
         mysqli_stmt_close($prep_stat);
 
-        header("Location: ../edit_document.php?doc_id={$doc_id}&error=none");
+        header("Location: ../edit_document.php?doc_id={$doc_id}&save=success");
         exit();
 
     }elseif(isset($_POST['section_title'])){
@@ -70,7 +70,7 @@ if(isset($_SESSION['username'])){
         mysqli_stmt_execute($prep_stat);
         mysqli_stmt_close($prep_stat);
 
-        header("Location: ../edit_document.php?doc_id={$doc_id}&error=none");
+        header("Location: ../edit_document.php?doc_id={$doc_id}&save=success");
         exit();
     }else{
         header("Location: ../edit_document.php?doc_id={$doc_id}&error=stmtfail");

@@ -42,6 +42,7 @@ if(isset($_SESSION['username'])){
 
         header("Location: ../edit_document.php?doc_id={$doc_id}&save=success");
         exit();
+        
     }elseif(isset($_POST['new_admin'])){
         $new_admin = $_POST['new_admin'];
 
