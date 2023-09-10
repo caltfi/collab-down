@@ -114,7 +114,13 @@ if(isset($_SESSION['username'])){
                     <div class="card p-4 mt-4">
                         <div class="row">
                             <div class="col">
-                                <h1 class="pb-2 ms-2"><?php echo $title; ?></h1>
+                                <h1 class="pb-2 ms-2" id="doc_title_display" style="display:block"><?php echo $title; ?></h1>
+
+                                <form action="change_document.php" method="post" id="change_title_form" style="display:none">
+                                    <label for="doc_title" aria-label="Input to Change Document Title"></label>
+                                    <input type="text" name="doc_title" id="doc_title_input" placeholder="Edit Title..." class="form-control form-control-lg mb-2">
+                                </form>
+
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item"><h5>Created: <?php echo date("D j M, Y", strtotime($date_created)) ?></h5></li>
                                     <?php 
@@ -136,6 +142,14 @@ if(isset($_SESSION['username'])){
                                         alt="Profile Picture for <?php echo $admin_info[0] ?>" class="rounded-circle me-2 border border-2" width="40" height="40">
                                        <span><h5>Document Admin:<br><strong><?php echo $admin_info[0] ?></strong></h5></span>
                                     </li>
+
+                                    <form action="change_document.php" method="post" id="change_admin_form" style="display:none">
+                                        <li class="list-group-item">
+                                            <label for="new_admin" aria-label="Input to Change Document Admin"></label>
+                                            <input type="text" name="new_admin" id="new_admin_input" placeholder="Change Admin..." class="form-control form-control-lg mb-2">
+                                        </li>
+                                    </form>
+
                                     <li class="list-group-item d-flex align-items-center">
                                         <span class="badge text-bg-light p-2 me-4"><h5><strong><?php echo $sections ?></strong> sections</h5></span>
                                         <span class="badge text-bg-light p-2 me-4"><h5><strong><?php echo $total_word_count ?></strong> words</h5></span>
@@ -175,6 +189,16 @@ if(isset($_SESSION['username'])){
                             </a>
                             
                         <?php
+                        }else{
+                            ?>
+                            <hr>
+                            <a href='leave_document.php?doc_id=<?php echo $doc_id ?>' class="btn btn-outline-danger d-flex justify-content-center align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill me-2" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                </svg>
+                                Leave
+                            </a> 
+                            <?php
                         }
                         ?>
                         </div>

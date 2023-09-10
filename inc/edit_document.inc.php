@@ -10,7 +10,7 @@ if(isset($_POST['save-submit'])){
 
     $file_path = "../mdfiles/{$file_id}.md";
     if(empty($content)){
-        header("Location: ../edit_document.php?doc_id=$doc_id&save=success");
+        header("Location: ../edit_document.php?doc_id=$doc_id");
         exit();
     }
 

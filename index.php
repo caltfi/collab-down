@@ -23,6 +23,11 @@
                     <strong>Success!</strong> You have deleted a document.
                     <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
                 </div>";
+        }elseif($_GET['doc'] == "left"){
+            echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+                    <strong>Success!</strong> You have left a document.
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                </div>";
         }
     }
     if(isset($_SESSION['user_full_name'])){
@@ -60,13 +65,20 @@
                 }
 
                 mysqli_stmt_close($prep_stat);
+                
                 }
             ?>
                 <div class="col ms-2 me-1 mt-3 mb-4">
                     <div class="card border-top-0 border-dark-subtle shadow-lg mb-5 ms-5" style="width:25rem; height:35rem;">
                         <img src="assets/images/spiral.jpg" class="card-img-top" alt="Document" style="border-bottom:medium dashed #8e8e8e;">
                         <div class="card-body mt-3">
-                            <h4 class="card-title ms-3"><strong><?php echo $document['documents_title'] ?></strong></h4>
+                            <h4 class="card-title ms-3"><strong><?php 
+                            if(strlen($document['documents_title']) > 25){
+                                echo substr($document['documents_title'], 0, 25) . '...';
+                            }else{
+                                echo $document['documents_title'];
+                            }
+                            ?></strong></h4>
                             <h6 class="card-subtitle ms-3">Created by <span class="fst-italic">@<?php echo $document['documents_admin'] ?></span> on <span class="fst-italic"><?php echo date("D j M, Y", strtotime($document['documents_date'])) ?></span></h6>
                             <ul class="list-group list-group-flush">
                                 <?php 
@@ -90,12 +102,10 @@
                                     <li class="list-group-item mb-2">
                                     <li class="list-group-item mb-2">
                                     <li class="list-group-item mb-2">
-                                    <li class="list-group-item mb-2">
                                     <?php
                                 }
                                 ?>
                                 <li class="list-group-item mb-2">
-                                <li class="list-group-item mb-1">
                                 <a href="edit_document.php?doc_id=<?php echo $document['documents_id'] ?>" class="btn btn-outline-dark d-flex justify-content-center align-items-center"> 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square me-2" viewBox="0 0 16 16">
                                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>

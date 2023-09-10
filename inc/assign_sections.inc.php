@@ -36,7 +36,7 @@
         <div class="row d-flex justify-content-center mb-3 align-items-start section">
             <div class="col-2">
                 <div class="card p-4 mt-4">
-                    <h3 class="text-center">Section 1</h3>
+                    <h3 class="text-center" id="title_assign_section1">Section 1</h3>
                 </div>
             </div>
             <div class="col-6">
