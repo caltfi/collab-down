@@ -81,6 +81,15 @@ if(isset($_SESSION['username'])){
                 header("Location: edit_document.php?doc_id=$doc_id&error=stmtfail");
                 exit();
             }
+
+            //delete from comments tavle where file id = $file_id
+            $query = "DELETE FROM comments WHERE comments_file_id = '$file_id'";
+            $result = mysqli_query($connection, $query);
+            if(!$result){
+                header("Location: edit_document.php?doc_id=$doc_id&error=stmtfail");
+                exit();
+            }
+            
         }else{
             header("Location: edit_document.php?doc_id=$doc_id&error=stmtfail");
             exit();

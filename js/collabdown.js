@@ -118,54 +118,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     //allow admin to change title and assigned user on edit doc page
-    // const sectionTitleInput   = document.getElementById("section_title_input");
-    // const sectionTitleForm    = document.getElementById("change_section_title_form");
-    // const assignedUserInput   = document.getElementById("section_user_input");
-    // const assignedUserForm    = document.getElementById("change_user_form");
-
-    // const changeSectionButton = document.getElementById("change_section_button");
-
-    // if(changeSectionButton){
-    //     if(sectionTitleInput && sectionTitleForm){
-    //         changeSectionButton.addEventListener("click", function(event) {
-    //             event.preventDefault();
-    //             if (sectionTitleForm.style.display === "block") {
-    //                 sectionTitleForm.style.display = "none";
-    //             } else {
-    //                 sectionTitleForm.style.display = "block";
-    //             }
-    //             sectionTitleInput.focus();
-    //         });
-
-    //         sectionTitleInput.addEventListener("keydown", function(event) {
-    //             if (event.key === "Enter") {
-    //             event.preventDefault();
-    //             sectionTitleForm.submit();
-    //             }
-    //         });
-    //     }
-
-    //     if(assignedUserInput && assignedUserForm){
-    //         changeSectionButton.addEventListener("click", function(event) {
-    //             event.preventDefault();
-    //             if (assignedUserForm.style.display === "block") {
-    //                 assignedUserForm.style.display = "none";
-    //             } else {
-    //                 assignedUserForm.style.display = "block";
-    //             }
-    //             assignedUserInput.focus();
-    //         });
-
-    //         assignedUserInput.addEventListener("keydown", function(event) {
-    //             if (event.key === "Enter") {
-    //             event.preventDefault();
-    //             assignedUserForm.submit();
-    //             }
-    //         });
-    //     }
-    // }
-
-    //allow admin to change title and assigned user on edit doc page
     const sectionTitleInputs = document.querySelectorAll(".section_title_input");
     const sectionTitleForms = document.querySelectorAll(".change_section_title_form");
     const sectionTitleDisplays = document.querySelectorAll(".section_title_display");
@@ -234,6 +186,39 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     }
+
+    //allow user to write flag comment
+    const flagCommentInputs = document.querySelectorAll(".flag_comment_input");
+    const flagCommentForms = document.querySelectorAll(".flag_comment_form");
+    const flagCommentButtons = document.querySelectorAll(".flag_comment_button");
+
+    // Add event listeners to each button
+    if(flagCommentButtons){
+        flagCommentButtons.forEach((button, index) => {
+            if(flagCommentInputs[index] && flagCommentForms[index]) {
+                button.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    //get textarea element in form
+                    const commentTextArea = flagCommentForms[index].querySelector("textarea");
+                    if(commentTextArea.style.display === "block"){
+                        commentTextArea.style.display = "none";
+                    }else{
+                        commentTextArea.style.display = "block";
+                    }
+                    commentTextArea.focus();
+                });
+
+                flagCommentInputs[index].addEventListener("keydown", function (event) {
+                    if(event.key === "Enter"){
+                        event.preventDefault();
+                        flagCommentForms[index].submit();
+                    }
+                });
+            }
+        });
+    }
+
+
 
     //allows user to change full name on profile page
     const nameInput = document.getElementById("full_name_text_input");

@@ -88,6 +88,14 @@ if(isset($_SESSION['username'])){
                 if(file_exists($file_path)){
                     unlink($file_path);
                 }
+
+                //delete from comments table where comments_file_id = $file_id
+                $query3 = "DELETE FROM comments WHERE comments_file_id = '$file_id';";
+                $result3 = mysqli_query($connection, $query3);
+                if(!$result3){
+                    header("Location: ../index.php?error=stmtfail");
+                    exit();
+                }
             }
             mysqli_stmt_close($prep_stat);
 

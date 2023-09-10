@@ -40,6 +40,16 @@ if(isset($_SESSION['username'])){
         $files_id = array();
         while($row = mysqli_fetch_assoc($result)){
             array_push($files_id, $row['files_id']);
+
+            $file_id = $row['files_id'];
+
+            //delete all rows from comments table with comments_file_id = $file_id
+            $query2 = "DELETE FROM comments WHERE comments_file_id = '$file_id';";
+            $result2 = mysqli_query($connection, $query2);
+            if(!$result2){
+                header("Location: ../index.php?error=stmtfail");
+                exit();
+            }
         }
         mysqli_stmt_close($prep_stat);
 
