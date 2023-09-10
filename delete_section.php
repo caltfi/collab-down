@@ -33,7 +33,7 @@ if(isset($_SESSION['username'])){
                     <div class="form-group">
                         <h2 class="pb-2 border-bottom mb-3 text-center">Are You Sure?</h2>
                         <p>Are you sure you want to delete this document section? You may lose your work or the work of another user.</p>
-                        <p><strong>By proceeding you will premanently delete this file section and the content contained within.</strong></p>
+                        <p><strong>By proceeding you will permanently delete this file section and the content contained within.</strong></p>
                         <hr class="mb-3">
                         <form action="" method="post" class=" d-flex justify-content-between align-items-center">
                             <a href="edit_document.php?doc_id=<?php echo $doc_id ?>" class="btn btn-dark">Go Back</a>

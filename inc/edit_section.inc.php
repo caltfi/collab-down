@@ -18,14 +18,22 @@ if(isset($_SESSION['username'])){
             header("Location: ../edit_document.php?doc_id={$doc_id}&error=stmtfail");
             exit();
         }
+        
+        //check if user exists
+        $uid_exists = user_name_exists($connection, $new_assigned_user, $new_assigned_user, "edit_document");
+        if($uid_exists === false){
+            header("Location: ../edit_document.php?doc_id={$doc_id}&error=invaliduser");
+            exit();
+        }
+        
         //Change assigned user to new user
-        $query     = "UPDATE files SET files_assign_uid = ? WHERE files_id = ? AND files_document_id = ? AND files_section_number = ?;";
+        $query     = "UPDATE files SET files_assign_uid = ? WHERE files_id = ?;";
         $prep_stat = mysqli_stmt_init($connection);
         if(!mysqli_stmt_prepare($prep_stat, $query)){
             header("Location: ../edit_document.php?doc_id={$doc_id}&error=stmtfail");
             exit();
         }
-        mysqli_stmt_bind_param($prep_stat, "siii", $new_assigned_user, $file_id, $doc_id, $section_number);
+        mysqli_stmt_bind_param($prep_stat, "ss", $new_assigned_user, $file_id);
         mysqli_stmt_execute($prep_stat);
         mysqli_stmt_close($prep_stat);
 
@@ -52,13 +60,13 @@ if(isset($_SESSION['username'])){
         }
 
         //Change title to new title
-        $query = "UPDATE files SET files_title = ? WHERE files_id = ? AND files_document_id = ? AND files_section_number = ?;";
+        $query = "UPDATE files SET files_title = ? WHERE files_id = ?;";
         $prep_stat = mysqli_stmt_init($connection);
         if(!mysqli_stmt_prepare($prep_stat, $query)){
             header("Location: ../edit_document.php?doc_id={$doc_id}&error=stmtfail");
             exit();
         }
-        mysqli_stmt_bind_param($prep_stat, "siii", $new_title, $file_id, $doc_id, $section_number);
+        mysqli_stmt_bind_param($prep_stat, "ss", $new_title, $file_id);
         mysqli_stmt_execute($prep_stat);
         mysqli_stmt_close($prep_stat);
 

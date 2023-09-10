@@ -30,19 +30,3 @@ if(isset($_POST['save-submit'])){
     header("Location: ../edit_document.php?doc_id=$doc_id&save=success");
     exit();
 }
-
-if(isset($_POST['delete-submit'])){
-    $doc_id = $_POST['doc_id'];
-    $file_id   = $_POST['file_id'];
-
-    header("Location: ../delete.php?doc_id={$doc_id}&file={$file_id}");
-    exit();
-}
-
-if(isset($_POST['approve-submit'])){
-    $doc_id = $_POST['doc_id'];
-    $file_id   = $_POST['file_id'];
-
-    header("Location: ../edit_document.php?doc_id=$doc_id&approve=true");
-    exit();
-}

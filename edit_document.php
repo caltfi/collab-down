@@ -116,7 +116,7 @@ if(isset($_SESSION['username'])){
                             <div class="col">
                                 <h1 class="pb-2 ms-2" id="doc_title_display" style="display:block"><?php echo $title; ?></h1>
 
-                                <form action="change_document.php" method="post" id="change_title_form" style="display:none">
+                                <form action="inc/change_document.inc.php?doc_id=<?php echo $doc_id ?>" method="post" id="change_title_form" style="display:none">
                                     <label for="doc_title" aria-label="Input to Change Document Title"></label>
                                     <input type="text" name="doc_title" id="doc_title_input" placeholder="Edit Title..." class="form-control form-control-lg mb-2">
                                 </form>
@@ -143,7 +143,7 @@ if(isset($_SESSION['username'])){
                                        <span><h5>Document Admin:<br><strong><?php echo $admin_info[0] ?></strong></h5></span>
                                     </li>
 
-                                    <form action="change_document.php" method="post" id="change_admin_form" style="display:none">
+                                    <form action="inc/change_document.inc.php?doc_id=<?php echo $doc_id ?>" method="post" id="change_admin_form" style="display:none">
                                         <li class="list-group-item">
                                             <label for="new_admin" aria-label="Input to Change Document Admin"></label>
                                             <input type="text" name="new_admin" id="new_admin_input" placeholder="Change Admin..." class="form-control form-control-lg mb-2">
