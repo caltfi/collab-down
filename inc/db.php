@@ -8,5 +8,5 @@
     $connection = mysqli_connect($servername, $username, $password, $dbname);
 
     if(!$connection){
-        echo "ERROR";
+        echo "ERROR: Cannot connect to database. " . mysqli_connect_error();
     }

@@ -12,51 +12,51 @@ if(isset($_SESSION['username'])){
     if(isset($_FILES['user_prof_pic']['name'])){
         $username = $_POST['username'];
 
-        if(empty($_FILES['user_prof_pic']['name'])){
-            header("Location: ../edit_profile.php?error=invalidimg");
-            exit();
-        }
+        // if(empty($_FILES['user_prof_pic']['name'])){
+        //     header("Location: ../edit_profile.php?error=invalidimg");
+        //     exit();
+        // }
 
-        $img_name      = $_FILES['user_prof_pic']['name'];
-        $img_tmp_name  = $_FILES['user_prof_pic']['tmp_name'];
-        $img_size      = $_FILES['user_prof_pic']['size'];
-        $img_extension = strtolower(pathinfo($img_name, PATHINFO_EXTENSION));
+        // $img_name      = $_FILES['user_prof_pic']['name'];
+        // $img_tmp_name  = $_FILES['user_prof_pic']['tmp_name'];
+        // $img_size      = $_FILES['user_prof_pic']['size'];
+        // $img_extension = strtolower(pathinfo($img_name, PATHINFO_EXTENSION));
 
-        $valid_img = array('jpg', 'jpeg', 'png');
-        if(!in_array($img_extension, $valid_img)){
-            header("Location: ../edit_profile.php?error=invalidimg");
-            exit();
-        }elseif($img_size > 1200000){
-            header("Location: ../edit_profile.php?error=imgtoolarge");
-            exit();
-        }else{
-            $new_img_name = $username . uniqid() . '.' . $img_extension;
+        // $valid_img = array('jpg', 'jpeg', 'png');
+        // if(!in_array($img_extension, $valid_img)){
+        //     header("Location: ../edit_profile.php?error=invalidimg");
+        //     exit();
+        // }elseif($img_size > 1200000){
+        //     header("Location: ../edit_profile.php?error=imgtoolarge");
+        //     exit();
+        // }else{
+        //     $new_img_name = $username . uniqid() . '.' . $img_extension;
 
-            //query to update image filename
-            $query = "UPDATE users SET users_profile_pic = '$new_img_name' WHERE users_uid = '$username';";
-            $result = mysqli_query($connection, $query);
-            if(!$result){
-                header("Location: ../edit_profile.php?error=stmtfail");
-                exit();
-            }
+        //     //query to update image filename
+        //     $query = "UPDATE users SET users_profile_pic = '$new_img_name' WHERE users_uid = '$username';";
+        //     $result = mysqli_query($connection, $query);
+        //     if(!$result){
+        //         header("Location: ../edit_profile.php?error=stmtfail");
+        //         exit();
+        //     }
 
-            $img_destination = "../assets/user_prof/{$username}/{$new_img_name}";
+        //     $img_destination = "../assets/user_prof/{$username}/{$new_img_name}";
 
-            if(!file_exists("../assets/user_prof/{$username}")){
-                mkdir("../assets/user_prof/{$username}");
-                move_uploaded_file($img_tmp_name, $img_destination);
-            }else{
-                if(file_exists("../assets/user_prof/{$username}/{$user_prof_pic}")){
-                    unlink("../assets/user_prof/{$username}/{$user_prof_pic}");
-                }
-                move_uploaded_file($img_tmp_name, $img_destination);
-            }
+        //     if(!file_exists("../assets/user_prof/{$username}")){
+        //         mkdir("../assets/user_prof/{$username}");
+        //         move_uploaded_file($img_tmp_name, $img_destination);
+        //     }else{
+        //         if(file_exists("../assets/user_prof/{$username}/{$user_prof_pic}")){
+        //             unlink("../assets/user_prof/{$username}/{$user_prof_pic}");
+        //         }
+        //         move_uploaded_file($img_tmp_name, $img_destination);
+        //     }
 
-            $_SESSION['user_prof_pic'] = $new_img_name;
+        //     $_SESSION['user_prof_pic'] = $new_img_name;
             
             header("Location: ../edit_profile.php?error=none");
             exit();
-        } 
+        //} 
     }elseif(isset($_POST['full_name'])){
         $new_full_name = $_POST['full_name'];
 
